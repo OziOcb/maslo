@@ -9,6 +9,8 @@
     <button @click="signOutHandler">Sign Out</button>
     <!-- <TestComponent /> -->
   </div>
+
+  <NuxtPage />
 </template>
 
 <script setup>
