@@ -8,12 +8,17 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
+  "overrides": {
+    "vue": "latest"
+  },
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@types/node": "^18",
     "nuxt": "^3.6.1"
   },
   "dependencies": {
-    "firebase": "^9.23.0"
+    "@pinia/nuxt": "^0.4.11",
+    "firebase": "^9.23.0",
+    "pinia": "^2.1.4"
   }
 }

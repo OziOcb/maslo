@@ -1,6 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  modules: ["@pinia/nuxt"],
+  pinia: {
+    autoImports: ["defineStore"],
+  },
   runtimeConfig: {
     public: {
       FB_API_KEY: process.env.NUXT_FB_API_KEY,
