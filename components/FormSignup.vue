@@ -9,7 +9,6 @@
 </template>
 
 <script setup>
-import { ref } from "#imports";
 const { createUser } = useFirebaseAuth();
 
 const username = ref("oz");

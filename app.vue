@@ -24,9 +24,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "#imports";
-import { onAuthStateChanged } from "firebase/auth";
-const { signOutUser } = useFirebaseAuth();
+const { signOutUser, onAuthStateChanged } = useFirebaseAuth();
 const { $auth } = useNuxtApp();
 
 const isLoggedIn = ref(false);

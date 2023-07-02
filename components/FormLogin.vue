@@ -8,13 +8,12 @@
 </template>
 
 <script setup>
-import { ref } from "#imports";
 const { signInUser } = useFirebaseAuth();
 
 const email = ref("oz@oz.com");
 const password = ref("deskorolka");
 
 async function login() {
-  signInUser(email.value, password.value);
+  await signInUser(email.value, password.value);
 }
 </script>

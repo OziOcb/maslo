@@ -3,10 +3,10 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
-// TODO: 1. Implement this - https://vuefire.vuejs.org/guide/
-// TODO: 2. Implement this - https://firebase.google.com/docs/auth/web/manage-users#send_a_user_a_verification_email
+// TODO: Implement this - https://firebase.google.com/docs/auth/web/manage-users#send_a_user_a_verification_email
 export default function () {
   const { $auth } = useNuxtApp();
 
@@ -39,5 +39,6 @@ export default function () {
     createUser,
     signInUser,
     signOutUser,
+    onAuthStateChanged,
   };
 }
