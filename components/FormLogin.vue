@@ -1,0 +1,20 @@
+<template>
+  <form @submit.prevent="login">
+    <h2>Log in</h2>
+    <input type="email" placeholder="Email" required v-model="email" />
+    <input type="password" placeholder="Password" required v-model="password" />
+    <button>Login</button>
+  </form>
+</template>
+
+<script setup>
+import { ref } from "#imports";
+const { signInUser } = useFirebaseAuth();
+
+const email = ref("oz@oz.com");
+const password = ref("deskorolka");
+
+async function login() {
+  signInUser(email.value, password.value);
+}
+</script>
