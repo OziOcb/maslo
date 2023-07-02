@@ -19,7 +19,7 @@
   <div v-else>
     <h1>Welcome {{ displayName }}</h1>
     <button @click="signOutHandler">Sign Out</button>
-    <!-- <TestComponent /> -->
+    <TestComponent />
   </div>
 </template>
 
