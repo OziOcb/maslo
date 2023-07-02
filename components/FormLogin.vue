@@ -13,8 +13,9 @@
 </template>
 
 <script setup>
-const { signInUser } = useFirebaseAuth();
 defineEmits(["toggleShowLogin"]);
+
+const { signInUser } = useFirebaseAuth();
 
 const email = ref("oz@oz.com");
 const password = ref("deskorolka");

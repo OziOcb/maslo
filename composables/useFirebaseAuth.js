@@ -14,24 +14,27 @@ export default function () {
     try {
       await createUserWithEmailAndPassword($auth, email, password);
       await updateProfile($auth.currentUser, { displayName: username });
-    } catch (error) {
-      console.error(error);
+      await navigateTo("/");
+    } catch (e) {
+      console.error("Error creating user: ", e);
     }
   };
 
   const signInUser = async (email, password) => {
     try {
       await signInWithEmailAndPassword($auth, email, password);
+      await navigateTo("/");
     } catch (e) {
-      console.error(e);
+      console.error("Error signing in user: ", e);
     }
   };
 
   const signOutUser = async () => {
     try {
       await signOut($auth);
+      await navigateTo("/login");
     } catch (e) {
-      console.error(e);
+      console.error("Error signing out user: ", e);
     }
   };
 

@@ -14,8 +14,9 @@
 </template>
 
 <script setup>
-const { createUser } = useFirebaseAuth();
 defineEmits(["toggleShowLogin"]);
+
+const { createUser } = useFirebaseAuth();
 
 const username = ref("oz");
 const email = ref("oz@oz.com");

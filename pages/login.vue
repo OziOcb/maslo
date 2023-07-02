@@ -1,7 +1,8 @@
 <template>
-  <div>login page yo</div>
+  <FormLogin v-if="showLogin" @toggleShowLogin="showLogin = $event" />
+  <FormSignup v-else @toggleShowLogin="showLogin = $event" />
 </template>
 
-<script setup></script>
-
-<style lang="scss" scoped></style>
+<script setup>
+const showLogin = ref(true);
+</script>
