@@ -28,7 +28,7 @@ let unsubscribeOnAuthStateChanged;
 onMounted(() => {
   unsubscribeOnAuthStateChanged = onAuthStateChanged($auth, (user) => {
     if (user) {
-      userStore.populateUserData(user);
+      userStore.user = user;
     } else {
       userStore.$reset();
     }
