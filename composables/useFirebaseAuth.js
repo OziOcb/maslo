@@ -5,6 +5,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
+import { useUserStore } from "@/stores/userStore";
 
 // TODO: Implement this - https://firebase.google.com/docs/auth/web/manage-users#send_a_user_a_verification_email
 export default function () {
@@ -38,10 +39,23 @@ export default function () {
     }
   };
 
+  const watchForAuthChange = async () => {
+    const userStore = useUserStore();
+    const unsubscribe = onAuthStateChanged($auth, (user) => {
+      if (user) {
+        userStore.user = user;
+      } else {
+        userStore.$reset();
+      }
+    });
+
+    return unsubscribe;
+  };
+
   return {
     createUser,
     signInUser,
     signOutUser,
-    onAuthStateChanged,
+    watchForAuthChange,
   };
 }

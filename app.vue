@@ -3,23 +3,13 @@
 </template>
 
 <script setup>
-import { useUserStore } from "@/stores/userStore";
-const userStore = useUserStore();
+const { watchForAuthChange } = useFirebaseAuth();
 
-const { onAuthStateChanged } = useFirebaseAuth();
-const { $auth } = useNuxtApp();
-
-let unsubscribeOnAuthStateChanged;
+let unsubscribe;
 onMounted(() => {
-  unsubscribeOnAuthStateChanged = onAuthStateChanged($auth, (user) => {
-    if (user) {
-      userStore.user = user;
-    } else {
-      userStore.$reset();
-    }
-  });
+  unsubscribe = watchForAuthChange();
 });
 onUnmounted(() => {
-  unsubscribeOnAuthStateChanged();
+  unsubscribe();
 });
 </script>
