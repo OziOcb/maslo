@@ -6,10 +6,16 @@
     <input type="password" placeholder="Password" required v-model="password" />
     <button>Sign Up</button>
   </form>
+
+  <p>
+    Already registered?
+    <span @click="$emit('toggleShowLogin', true)">Login</span> instead.
+  </p>
 </template>
 
 <script setup>
 const { createUser } = useFirebaseAuth();
+defineEmits(["toggleShowLogin"]);
 
 const username = ref("oz");
 const email = ref("oz@oz.com");

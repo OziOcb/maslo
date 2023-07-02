@@ -1,25 +1,13 @@
 <template>
   <div v-if="!isLoggedIn">
-    <template v-if="showLogin">
-      <FormLogin />
-      <p>
-        No account yet? <span @click="showLogin = false">Sign up</span> instead.
-      </p>
-    </template>
-
-    <template v-else>
-      <FormSignup />
-      <p>
-        Already registered?
-        <span @click="showLogin = true">Login</span> instead.
-      </p>
-    </template>
+    <FormLogin v-if="showLogin" @toggleShowLogin="showLogin = $event" />
+    <FormSignup v-else @toggleShowLogin="showLogin = $event" />
   </div>
 
   <div v-else>
     <h1>Welcome {{ displayName }}</h1>
     <button @click="signOutHandler">Sign Out</button>
-    <TestComponent />
+    <!-- <TestComponent /> -->
   </div>
 </template>
 
