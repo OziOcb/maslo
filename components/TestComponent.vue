@@ -189,13 +189,16 @@ async function subscribeToFilteredPlayersCollection() {
 const DEFAULT_ADD_PLAYER_FORM = {
   first: "1",
   last: "1",
-  age: 1,
+  age: Math.floor(Math.random() * 100),
   authorID: "",
 };
 const formAddPlayer = reactive({ ...DEFAULT_ADD_PLAYER_FORM });
 async function addNewPlayerHandler() {
   await addNewFirebaseDocument("players", formAddPlayer);
-  Object.assign(formAddPlayer, DEFAULT_ADD_PLAYER_FORM);
+  Object.assign(formAddPlayer, {
+    ...DEFAULT_ADD_PLAYER_FORM,
+    age: Math.floor(Math.random() * 100),
+  });
 }
 
 // UPDATE PLAYERS
@@ -239,14 +242,6 @@ async function getPlayerHandler() {
 async function deletePlayerHandler(playerId) {
   await deleteFirebaseDocument("players", playerId);
 }
-
-// DELETE FIELD FORM DOC
-// async function deleteFieldFromDoc() {
-//   const docRef = doc(firestoreDB, 'players', 'DQ7ICfeCtk1k4QLNLpy7')
-//   await updateDoc(docRef, {
-//     first: deleteField()
-//   })
-// }
 </script>
 
 <style>
