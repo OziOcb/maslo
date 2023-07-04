@@ -11,17 +11,21 @@ import { useUserStore } from "@/stores/userStore";
 export default function () {
   const { $auth } = useNuxtApp();
 
-  const createUser = async (email, password, username) => {
+  const createUser = async (
+    email: string,
+    password: string,
+    username: string
+  ) => {
     try {
       await createUserWithEmailAndPassword($auth, email, password);
-      await updateProfile($auth.currentUser, { displayName: username });
+      await updateProfile($auth.currentUser!, { displayName: username });
       await navigateTo("/");
     } catch (e) {
       console.error("Error creating user: ", e);
     }
   };
 
-  const signInUser = async (email, password) => {
+  const signInUser = async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword($auth, email, password);
       await navigateTo("/");

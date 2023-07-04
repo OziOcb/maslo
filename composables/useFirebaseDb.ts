@@ -1,3 +1,4 @@
+import { Operators } from "@/types/types";
 import {
   getDoc,
   doc,
@@ -15,17 +16,23 @@ import {
 export default function () {
   const { $firestore, $auth } = useNuxtApp();
 
-  const addNewFirebaseDocument = async (collectionName, formData) => {
+  const addNewFirebaseDocument = async (
+    collectionName: string,
+    formData: {}
+  ) => {
     try {
       const collectionRef = collection($firestore, collectionName);
-      const data = { ...formData, authorID: $auth.currentUser.uid };
+      const data = { ...formData, authorID: $auth.currentUser?.uid };
       await addDoc(collectionRef, data);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
 
-  const getFirebaseDocument = async (collectionName, documentId) => {
+  const getFirebaseDocument = async (
+    collectionName: string,
+    documentId: string
+  ) => {
     try {
       const docRef = doc($firestore, collectionName, documentId);
       const snap = await getDoc(docRef);
@@ -36,10 +43,10 @@ export default function () {
   };
 
   const updateFirebaseDocument = async (
-    collectionName,
-    documentId,
-    key,
-    newValue
+    collectionName: string,
+    documentId: string,
+    key: string,
+    newValue: any
   ) => {
     try {
       const docRef = doc($firestore, collectionName, documentId);
@@ -49,7 +56,10 @@ export default function () {
     }
   };
 
-  const deleteFirebaseDocument = async (collectionName, documentId) => {
+  const deleteFirebaseDocument = async (
+    collectionName: string,
+    documentId: string
+  ) => {
     try {
       const docRef = doc($firestore, collectionName, documentId);
       await deleteDoc(docRef);
@@ -59,19 +69,25 @@ export default function () {
   };
 
   const subscribeToFirebaseCollection = async (
-    collectionName,
-    orderByKey,
-    dataRef
+    collectionName: string,
+    orderByKey: string,
+    dataRef: Ref
   ) => {
     try {
       const collectionRef = collection($firestore, collectionName);
       const q = query(
         collectionRef,
         orderBy(orderByKey),
+        // TODO: ENDED HERE!
+        // TODO: ENDED HERE!
+        // TODO: ENDED HERE!
+        // TODO: ENDED HERE!
+        // TODO: ENDED HERE! Fix this errors!!!!
+        // TODO: ENDED HERE!
         where("authorID", "==", $auth.currentUser.uid)
       );
       const unSub = onSnapshot(q, (snap) => {
-        const arr = [];
+        const arr: { id: string }[] = [];
         snap.forEach((doc) => {
           arr.push({ ...doc.data(), id: doc.id });
         });
@@ -85,13 +101,13 @@ export default function () {
   };
 
   const subscribeToFirebaseCollectionWithFilter = async (
-    collectionName,
-    orderByKey,
-    dataRef,
-    key,
-    operator,
-    filterValue,
-    searchLimit
+    collectionName: string,
+    orderByKey: string,
+    dataRef: Ref,
+    key: string,
+    operator: Operators,
+    filterValue: string | number,
+    searchLimit: number
   ) => {
     try {
       // prettier-ignore
@@ -110,7 +126,7 @@ export default function () {
         limit(searchLimit)
       );
       const unSub = onSnapshot(q, (snap) => {
-        const arr = [];
+        const arr: { id: string }[] = [];
         snap.forEach((doc) => {
           arr.push({ ...doc.data(), id: doc.id });
         });

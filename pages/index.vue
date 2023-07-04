@@ -1,7 +1,7 @@
 <template>
   <h1>Welcome {{ userStore.user?.displayName || "user" }}</h1>
   <button @click="signOutHandler">Sign Out</button>
-  <!-- <TestComponent /> -->
+  <TestComponent />
 </template>
 
 <script setup>

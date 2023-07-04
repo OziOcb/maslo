@@ -109,7 +109,9 @@
   <h2 v-else>Players list is empty</h2>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { Unsubscribe } from "@firebase/firestore";
+import { Operators } from "@/types/types";
 const {
   addNewFirebaseDocument,
   updateFirebaseDocument,
@@ -119,15 +121,16 @@ const {
   subscribeToFirebaseCollectionWithFilter,
 } = useFirebaseDb();
 
-let unsubscribeFromPlayersCollection, unsubscribeFromFilteredPlayersCollection;
+let unsubscribeFromFilteredPlayersCollection: Unsubscribe | undefined;
+let unsubscribeFromPlayersCollection: Unsubscribe | undefined;
 
 onMounted(() => {
   subscribeToPlayersCollection();
 });
 onUnmounted(() => {
+  // prettier-ignore
+  if (unsubscribeFromFilteredPlayersCollection) unsubscribeFromFilteredPlayersCollection();
   if (unsubscribeFromPlayersCollection) unsubscribeFromPlayersCollection();
-  if (unsubscribeFromFilteredPlayersCollection)
-    unsubscribeFromFilteredPlayersCollection();
 });
 
 const players = ref([]);
@@ -145,7 +148,7 @@ async function subscribeToPlayersCollection() {
 // https://firebase.google.com/docs/firestore/query-data/queries
 const DEFAULT_GET_FILTERED_PLAYER_FORM = {
   key: "age",
-  operator: ">",
+  operator: ">" as Operators,
   searchValue: "",
   searchLimit: 10,
 };
@@ -170,7 +173,7 @@ const formGetFilteredUser = reactive({
   ],
 });
 async function subscribeToFilteredPlayersCollection() {
-  unsubscribeFromPlayersCollection();
+  if (unsubscribeFromPlayersCollection) unsubscribeFromPlayersCollection();
   const { key, operator, searchValue, searchLimit } = formGetFilteredUser;
   const filterValue = key !== "age" ? searchValue : +searchValue; // TODO: This logic needs improvement
   unsubscribeFromFilteredPlayersCollection =
@@ -229,7 +232,7 @@ const DEFAULT_GET_PLAYER_FORM = {
 const formGetPlayer = reactive({ ...DEFAULT_GET_PLAYER_FORM });
 async function getPlayerHandler() {
   const snap = await getFirebaseDocument("players", formGetPlayer.playerId);
-  if (snap.exists()) {
+  if (snap?.exists()) {
     const { first, last, age } = snap.data();
     alert(`name: ${first} ${last}\nage: ${age}`);
     Object.assign(formGetPlayer, DEFAULT_GET_PLAYER_FORM);
@@ -239,7 +242,7 @@ async function getPlayerHandler() {
 }
 
 // DELETE PLAYERS
-async function deletePlayerHandler(playerId) {
+async function deletePlayerHandler(playerId: string) {
   await deleteFirebaseDocument("players", playerId);
 }
 </script>
