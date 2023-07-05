@@ -83,6 +83,8 @@ export default function () {
         // TODO: ENDED HERE!
         // TODO: ENDED HERE!
         // TODO: ENDED HERE! Fix this errors!!!!
+        // TODO: ENDED HERE! Sproubuj tej metody - https://stackoverflow.com/questions/72814848/nuxt-3-onload-wait-for-onauthstatechange
+        // TODO: ENDED HERE!
         // TODO: ENDED HERE!
         where("authorID", "==", $auth.currentUser.uid)
       );
