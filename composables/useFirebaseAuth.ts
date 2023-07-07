@@ -3,6 +3,7 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
   signOut,
+  getAuth,
   onAuthStateChanged,
 } from "firebase/auth";
 import { useUserStore } from "@/stores/userStore";
@@ -56,10 +57,24 @@ export default function () {
     return unsubscribe;
   };
 
+  const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+      const removeListener = onAuthStateChanged(
+        getAuth(),
+        (user) => {
+          removeListener();
+          resolve(user);
+        },
+        reject
+      );
+    });
+  };
+
   return {
     createUser,
     signInUser,
     signOutUser,
     watchForAuthChange,
+    getCurrentUser,
   };
 }
