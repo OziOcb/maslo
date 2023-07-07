@@ -19,4 +19,5 @@ export default defineNuxtConfig({
       FB_MEASUREMENT_ID: process.env.NUXT_FB_MEASUREMENT_ID,
     },
   },
+  ssr: false,
 });
