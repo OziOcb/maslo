@@ -78,15 +78,7 @@ export default function () {
       const q = query(
         collectionRef,
         orderBy(orderByKey),
-        // TODO: ENDED HERE!
-        // TODO: ENDED HERE!
-        // TODO: ENDED HERE!
-        // TODO: ENDED HERE!
-        // TODO: ENDED HERE! Fix this errors!!!!
-        // TODO: ENDED HERE! Sproubuj tej metody - https://stackoverflow.com/questions/72814848/nuxt-3-onload-wait-for-onauthstatechange
-        // TODO: ENDED HERE!
-        // TODO: ENDED HERE!
-        where("authorID", "==", $auth.currentUser.uid)
+        where("authorID", "==", $auth.currentUser?.uid)
       );
       const unSub = onSnapshot(q, (snap) => {
         const arr: { id: string }[] = [];
@@ -123,7 +115,7 @@ export default function () {
       const q = query(
         collectionRef,
         orderBy(orderByKey),
-        where("authorID", "==", $auth.currentUser.uid),
+        where("authorID", "==", $auth.currentUser?.uid),
         where(key, operator, filterValue),
         limit(searchLimit)
       );
