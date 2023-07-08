@@ -5,6 +5,7 @@ import {
   signOut,
   getAuth,
   onAuthStateChanged,
+  User,
 } from "firebase/auth";
 import { useUserStore } from "@/stores/userStore";
 
@@ -57,7 +58,7 @@ export default function () {
     return unsubscribe;
   };
 
-  const getCurrentUser = () => {
+  const getCurrentUser = (): Promise<User | null> => {
     return new Promise((resolve, reject) => {
       const removeListener = onAuthStateChanged(
         getAuth(),

@@ -78,6 +78,7 @@ export default function () {
       const q = query(
         collectionRef,
         orderBy(orderByKey),
+        // TODO: ENDED HERE! Sprobuj zamienic wszystkie $auth.currentUser na nowy composable - const { getCurrentUser } = useFirebaseAuth();
         where("authorID", "==", $auth.currentUser?.uid)
       );
       const unSub = onSnapshot(q, (snap) => {
