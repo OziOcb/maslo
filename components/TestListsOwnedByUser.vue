@@ -7,7 +7,7 @@
   </form>
 
   <ul>
-    <li v-for="list in lists" :key="list.id">
+    <li v-for="list in listStore.lists" :key="list.id">
       {{ list.name }}
     </li>
   </ul>
@@ -15,35 +15,25 @@
 
 <script setup lang="ts">
 import { useUserStore } from "@/stores/userStore";
+import { useListsStore } from "@/stores/listsStore";
 import type { List } from "@/types/types";
 import { Unsubscribe } from "@firebase/firestore";
 
-const { addNewFirebaseDocument, subscribeToFirebaseCollection } =
-  useFirebaseDb();
+const { addNewFirebaseDocument } = useFirebaseDb();
 const userStore = useUserStore();
+const listStore = useListsStore();
 
 const currentUserUid = userStore.user?.uid;
 const isAddNewListModalVisible = ref(false);
-// TODO: ENDED HERE! Create logic for deleting lists
-// TODO: ENDED HERE! Move this logic to Pinia
-const lists: Ref<List[]> = ref([]);
 const newListName = ref("");
 
 let unsubscribeFromListsCollection: Unsubscribe | undefined;
-onMounted(() => {
-  subscribeToListsCollection();
+onMounted(async () => {
+  unsubscribeFromListsCollection = await listStore.subscribeToListsCollection();
 });
 onUnmounted(() => {
   if (unsubscribeFromListsCollection) unsubscribeFromListsCollection();
 });
-
-async function subscribeToListsCollection() {
-  unsubscribeFromListsCollection = await subscribeToFirebaseCollection(
-    `users/${currentUserUid}/lists`,
-    "createdAt",
-    lists
-  );
-}
 
 async function addNewListHandler() {
   const listObj: List = {

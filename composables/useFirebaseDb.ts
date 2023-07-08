@@ -15,8 +15,6 @@ import {
 } from "firebase/firestore";
 
 export default function () {
-  const { $firestore, $auth } = useNuxtApp();
-
   /**
    * Using Firebase addDoc method
    */
@@ -24,6 +22,7 @@ export default function () {
     collectionName: string,
     formData: {}
   ) => {
+    const { $firestore, $auth } = useNuxtApp();
     try {
       const collectionRef = collection($firestore, collectionName);
       const data = { ...formData, authorID: $auth.currentUser?.uid };
@@ -41,6 +40,7 @@ export default function () {
     documentId: string,
     formData: {}
   ) => {
+    const { $firestore, $auth } = useNuxtApp();
     try {
       const docRef = doc($firestore, collectionName, documentId);
       const data = { ...formData, authorID: $auth.currentUser?.uid };
@@ -57,6 +57,7 @@ export default function () {
     collectionName: string,
     documentId: string
   ) => {
+    const { $firestore } = useNuxtApp();
     try {
       const docRef = doc($firestore, collectionName, documentId);
       const snap = await getDoc(docRef);
@@ -75,6 +76,7 @@ export default function () {
     key: string,
     newValue: any
   ) => {
+    const { $firestore } = useNuxtApp();
     try {
       const docRef = doc($firestore, collectionName, documentId);
       await updateDoc(docRef, { [key]: newValue });
@@ -90,6 +92,7 @@ export default function () {
     collectionName: string,
     documentId: string
   ) => {
+    const { $firestore } = useNuxtApp();
     try {
       const docRef = doc($firestore, collectionName, documentId);
       await deleteDoc(docRef);
@@ -102,27 +105,25 @@ export default function () {
    * Using Firebase onSnapshot method
    * Value for the Id property will be assign automatically based on the Firebase Document Id
    */
-  const subscribeToFirebaseCollection = async (
+  const subscribeToFirebaseCollection = async <T>(
     collectionName: string,
-    orderByKey: string,
-    dataRef: Ref
+    orderByKey: string
   ) => {
+    const { $firestore, $auth } = useNuxtApp();
     try {
-      const collectionRef = collection($firestore, collectionName);
+      const arr: T[] = [];
       const q = query(
-        collectionRef,
+        collection($firestore, collectionName),
         orderBy(orderByKey),
         where("authorID", "==", $auth.currentUser?.uid)
       );
       const unSub = onSnapshot(q, (snap) => {
-        const arr: { id: string }[] = [];
         snap.forEach((doc) => {
-          arr.push({ ...doc.data(), id: doc.id });
+          arr.push({ ...doc.data(), id: doc.id } as T);
         });
-        dataRef.value = arr;
       });
 
-      return unSub;
+      return { unSub, arr };
     } catch (e) {
       console.error("Error subscribing to collection: ", e);
     }
@@ -132,15 +133,15 @@ export default function () {
    * Using Firebase onSnapshot method
    * Value for the Id property will be assign automatically based on the Firebase Document Id
    */
-  const subscribeToFirebaseCollectionWithFilter = async (
+  const subscribeToFirebaseCollectionWithFilter = async <T>(
     collectionName: string,
     orderByKey: string,
-    dataRef: Ref,
     key: string,
     operator: Operators,
     filterValue: string | number,
     searchLimit: number
   ) => {
+    const { $firestore, $auth } = useNuxtApp();
     try {
       // prettier-ignore
       const operators = ['<', '<=', '==', '>', '>=', '!=', 'array-contains', 'array-contains-any', 'in', 'not-in']
@@ -149,23 +150,21 @@ export default function () {
         return;
       }
 
-      const collectionRef = collection($firestore, collectionName);
+      const arr: T[] = [];
       const q = query(
-        collectionRef,
+        collection($firestore, collectionName),
         orderBy(orderByKey),
         where("authorID", "==", $auth.currentUser?.uid),
         where(key, operator, filterValue),
         limit(searchLimit)
       );
       const unSub = onSnapshot(q, (snap) => {
-        const arr: { id: string }[] = [];
         snap.forEach((doc) => {
-          arr.push({ ...doc.data(), id: doc.id });
+          arr.push({ ...doc.data(), id: doc.id } as T);
         });
-        dataRef.value = arr;
       });
 
-      return unSub;
+      return { unSub, arr };
     } catch (e) {
       console.error("Error subscribing to collection with filter: ", e);
     }
