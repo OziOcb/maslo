@@ -19,15 +19,15 @@ export const useListsStore = defineStore("useListsStore", {
     async subscribeToListsCollection() {
       const userStore = useUserStore();
 
-      const res = await subscribeToFirebaseCollection<List>(
-        `users/${userStore.user?.uid}/lists`,
-        "createdAt"
-      );
+      // const res = await subscribeToFirebaseCollection<List>(
+      //   `users/${userStore.user?.uid}/lists`,
+      //   "createdAt"
+      // );
 
-      await new Promise((r) => setTimeout(r, 300)); // FIXME This is a temporary hack!
+      // await new Promise((r) => setTimeout(r, 300)); // FIXME This is a temporary hack!
 
-      this.lists = res!.arr;
-      this.unsubscribe = res!.unSub;
+      // this.lists = res!.arr;
+      // this.unsubscribe = res!.unSub;
     },
   },
 });

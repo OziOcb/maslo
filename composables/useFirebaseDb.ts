@@ -107,23 +107,25 @@ export default function () {
    */
   const subscribeToFirebaseCollection = async <T>(
     collectionName: string,
-    orderByKey: string
+    orderByKey: string,
+    dataRef: Ref
   ) => {
     const { $firestore, $auth } = useNuxtApp();
     try {
-      const arr: T[] = [];
       const q = query(
         collection($firestore, collectionName),
         orderBy(orderByKey),
         where("authorID", "==", $auth.currentUser?.uid)
       );
       const unSub = onSnapshot(q, (snap) => {
+        const arr: T[] = [];
         snap.forEach((doc) => {
           arr.push({ ...doc.data(), id: doc.id } as T);
         });
+        dataRef.value = arr;
       });
 
-      return { unSub, arr };
+      return unSub;
     } catch (e) {
       console.error("Error subscribing to collection: ", e);
     }
@@ -136,6 +138,7 @@ export default function () {
   const subscribeToFirebaseCollectionWithFilter = async <T>(
     collectionName: string,
     orderByKey: string,
+    dataRef: Ref,
     key: string,
     operator: Operators,
     filterValue: string | number,
@@ -150,7 +153,6 @@ export default function () {
         return;
       }
 
-      const arr: T[] = [];
       const q = query(
         collection($firestore, collectionName),
         orderBy(orderByKey),
@@ -159,12 +161,14 @@ export default function () {
         limit(searchLimit)
       );
       const unSub = onSnapshot(q, (snap) => {
+        const arr: T[] = [];
         snap.forEach((doc) => {
           arr.push({ ...doc.data(), id: doc.id } as T);
         });
+        dataRef.value = arr;
       });
 
-      return { unSub, arr };
+      return unSub;
     } catch (e) {
       console.error("Error subscribing to collection with filter: ", e);
     }
