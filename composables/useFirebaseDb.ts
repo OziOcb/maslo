@@ -100,6 +100,7 @@ export default function () {
 
   /**
    * Using Firebase onSnapshot method
+   * Value for the Id property will be assign automatically based on the Firebase Document Id
    */
   const subscribeToFirebaseCollection = async (
     collectionName: string,
@@ -111,7 +112,6 @@ export default function () {
       const q = query(
         collectionRef,
         orderBy(orderByKey),
-        // TODO: ENDED HERE! Sprobuj zamienic wszystkie $auth.currentUser na nowy composable - const { getCurrentUser } = useFirebaseAuth();
         where("authorID", "==", $auth.currentUser?.uid)
       );
       const unSub = onSnapshot(q, (snap) => {
@@ -130,6 +130,7 @@ export default function () {
 
   /**
    * Using Firebase onSnapshot method
+   * Value for the Id property will be assign automatically based on the Firebase Document Id
    */
   const subscribeToFirebaseCollectionWithFilter = async (
     collectionName: string,
