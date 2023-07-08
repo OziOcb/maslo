@@ -1,6 +1,7 @@
 import { Operators } from "@/types/types";
 import {
   getDoc,
+  setDoc,
   doc,
   updateDoc,
   addDoc,
@@ -16,6 +17,9 @@ import {
 export default function () {
   const { $firestore, $auth } = useNuxtApp();
 
+  /**
+   * Using Firebase addDoc method
+   */
   const addNewFirebaseDocument = async (
     collectionName: string,
     formData: {}
@@ -29,6 +33,26 @@ export default function () {
     }
   };
 
+  /**
+   * Using Firebase setDoc method
+   */
+  const setNewFirebaseDocumentWithId = async (
+    collectionName: string,
+    documentId: string,
+    formData: {}
+  ) => {
+    try {
+      const docRef = doc($firestore, collectionName, documentId);
+      const data = { ...formData, authorID: $auth.currentUser?.uid };
+      await setDoc(docRef, data);
+    } catch (e) {
+      console.error("Error setting document: ", e);
+    }
+  };
+
+  /**
+   * Using Firebase getDoc method
+   */
   const getFirebaseDocument = async (
     collectionName: string,
     documentId: string
@@ -42,6 +66,9 @@ export default function () {
     }
   };
 
+  /**
+   * Using Firebase updateDoc method
+   */
   const updateFirebaseDocument = async (
     collectionName: string,
     documentId: string,
@@ -56,6 +83,9 @@ export default function () {
     }
   };
 
+  /**
+   * Using Firebase deleteDoc method
+   */
   const deleteFirebaseDocument = async (
     collectionName: string,
     documentId: string
@@ -68,6 +98,9 @@ export default function () {
     }
   };
 
+  /**
+   * Using Firebase onSnapshot method
+   */
   const subscribeToFirebaseCollection = async (
     collectionName: string,
     orderByKey: string,
@@ -95,6 +128,9 @@ export default function () {
     }
   };
 
+  /**
+   * Using Firebase onSnapshot method
+   */
   const subscribeToFirebaseCollectionWithFilter = async (
     collectionName: string,
     orderByKey: string,
@@ -136,6 +172,7 @@ export default function () {
 
   return {
     addNewFirebaseDocument,
+    setNewFirebaseDocumentWithId,
     getFirebaseDocument,
     updateFirebaseDocument,
     deleteFirebaseDocument,

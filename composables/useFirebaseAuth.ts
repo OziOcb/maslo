@@ -12,6 +12,7 @@ import { useUserStore } from "@/stores/userStore";
 // TODO: Implement this - https://firebase.google.com/docs/auth/web/manage-users#send_a_user_a_verification_email
 export default function () {
   const { $auth } = useNuxtApp();
+  const { setNewFirebaseDocumentWithId } = useFirebaseDb();
 
   const createUser = async (
     email: string,
@@ -19,8 +20,10 @@ export default function () {
     username: string
   ) => {
     try {
-      await createUserWithEmailAndPassword($auth, email, password);
-      await updateProfile($auth.currentUser!, { displayName: username });
+      // prettier-ignore
+      const { user } = await createUserWithEmailAndPassword($auth, email, password);
+      await updateProfile(user, { displayName: username });
+      await setNewFirebaseDocumentWithId("users", user.uid, { username });
       await navigateTo("/dashboard");
     } catch (e) {
       console.error("Error creating user: ", e);
