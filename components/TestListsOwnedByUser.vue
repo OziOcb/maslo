@@ -17,7 +17,6 @@
 import { useUserStore } from "@/stores/userStore";
 import { useListsStore } from "@/stores/listsStore";
 import type { List } from "@/types/types";
-import { Unsubscribe } from "@firebase/firestore";
 
 const { addNewFirebaseDocument } = useFirebaseDb();
 const userStore = useUserStore();
@@ -27,14 +26,15 @@ const currentUserUid = userStore.user?.uid;
 const isAddNewListModalVisible = ref(false);
 const newListName = ref("");
 
-let unsubscribeFromListsCollection: Unsubscribe | undefined;
-onMounted(async () => {
-  unsubscribeFromListsCollection = await listStore.subscribeToListsCollection();
+onMounted(() => {
+  listStore.subscribeToListsCollection();
 });
 onUnmounted(() => {
-  if (unsubscribeFromListsCollection) unsubscribeFromListsCollection();
+  listStore.unsubscribeFromListsCollection();
 });
 
+// TODO: ENDED HERE! 1. Move this to pinia
+// TODO: ENDED HERE! 2. Add logic for delecting lists
 async function addNewListHandler() {
   const listObj: List = {
     name: newListName.value,

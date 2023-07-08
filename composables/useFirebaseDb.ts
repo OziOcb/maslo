@@ -105,7 +105,7 @@ export default function () {
    * Using Firebase onSnapshot method
    * Value for the Id property will be assign automatically based on the Firebase Document Id
    */
-  const subscribeToFirebaseCollection = async <T>(
+  const subscribeToFirebaseCollection = <T>(
     collectionName: string,
     orderByKey: string,
     dataRef: Ref
@@ -135,7 +135,7 @@ export default function () {
    * Using Firebase onSnapshot method
    * Value for the Id property will be assign automatically based on the Firebase Document Id
    */
-  const subscribeToFirebaseCollectionWithFilter = async <T>(
+  const subscribeToFirebaseCollectionWithFilter = <T>(
     collectionName: string,
     orderByKey: string,
     dataRef: Ref,

@@ -1,12 +1,16 @@
 import type { List } from "@/types/types";
-const { addNewFirebaseDocument, subscribeToFirebaseCollection } =
-  useFirebaseDb();
-
-import { useUserStore } from "./userStore";
+import {
+  onSnapshot,
+  collection,
+  query,
+  orderBy,
+  where,
+  Unsubscribe,
+} from "firebase/firestore";
 
 interface State {
   lists: List[];
-  unsubscribe: any;
+  unsubscribe: Unsubscribe | null;
 }
 
 export const useListsStore = defineStore("useListsStore", {
@@ -16,18 +20,30 @@ export const useListsStore = defineStore("useListsStore", {
   }),
 
   actions: {
-    async subscribeToListsCollection() {
-      const userStore = useUserStore();
+    subscribeToListsCollection() {
+      const { $firestore, $auth } = useNuxtApp();
+      try {
+        const q = query(
+          collection($firestore, `users/${$auth.currentUser?.uid}/lists`),
+          orderBy("createdAt"),
+          where("authorID", "==", $auth.currentUser?.uid)
+        );
+        const unSub = onSnapshot(q, (snap) => {
+          const arr: List[] = [];
+          snap.forEach((doc) => {
+            arr.push({ ...doc.data(), id: doc.id } as List);
+          });
+          this.lists = arr;
+        });
 
-      // const res = await subscribeToFirebaseCollection<List>(
-      //   `users/${userStore.user?.uid}/lists`,
-      //   "createdAt"
-      // );
+        this.unsubscribe = unSub;
+      } catch (e) {
+        console.error("Error subscribing to the Lists collection: ", e);
+      }
+    },
 
-      // await new Promise((r) => setTimeout(r, 300)); // FIXME This is a temporary hack!
-
-      // this.lists = res!.arr;
-      // this.unsubscribe = res!.unSub;
+    unsubscribeFromListsCollection() {
+      if (this.unsubscribe) this.unsubscribe();
     },
   },
 });
