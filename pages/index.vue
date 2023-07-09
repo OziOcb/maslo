@@ -4,5 +4,9 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: "login",
+});
+
 const showLogin = ref(true);
 </script>
