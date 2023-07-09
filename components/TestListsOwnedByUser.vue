@@ -8,7 +8,10 @@
 
   <ul>
     <li v-for="list in listStore.lists" :key="list.id">
-      <span>{{ list.name }} - </span>
+      <NuxtLink :to="`/dashboard/list/${list.id}`">
+        {{ list.name }}
+      </NuxtLink>
+      ---
       <button @click="deleteList(list.id!)">delete</button>
     </li>
   </ul>
