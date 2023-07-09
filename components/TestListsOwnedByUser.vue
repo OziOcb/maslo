@@ -8,7 +8,8 @@
 
   <ul>
     <li v-for="list in listStore.lists" :key="list.id">
-      {{ list.name }}
+      <span>{{ list.name }} - </span>
+      <button @click="deleteList(list.id!)">delete</button>
     </li>
   </ul>
 </template>
@@ -29,7 +30,12 @@ onUnmounted(() => {
 
 async function addNewListHandler() {
   await listStore.addNewList(newListName.value);
+  newListName.value = "";
   isAddNewListModalVisible.value = false;
+}
+
+async function deleteList(listId: string) {
+  await listStore.deleteList(listId);
 }
 </script>
 
