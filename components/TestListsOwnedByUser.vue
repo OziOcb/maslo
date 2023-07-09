@@ -1,10 +1,12 @@
 <template>
-  <button @click="isAddNewListModalVisible = true">Add new list</button>
+  <div style="display: flex">
+    <button @click="isAddNewListModalVisible = true">Add new list</button>
 
-  <form v-if="isAddNewListModalVisible" @submit.prevent="addNewListHandler">
-    <input v-model="newListName" type="text" placeholder="list name" />
-    <button type="submit" :disabled="!newListName">add</button>
-  </form>
+    <form v-if="isAddNewListModalVisible" @submit.prevent="addNewListHandler">
+      <input v-model="newListName" type="text" placeholder="list name" />
+      <button type="submit" :disabled="!newListName">add</button>
+    </form>
+  </div>
 
   <ul>
     <li v-for="list in listStore.lists" :key="list.id">
@@ -18,6 +20,8 @@
 </template>
 
 <script setup lang="ts">
+const route = useRoute();
+
 import { useListsStore } from "@/stores/listsStore";
 const listStore = useListsStore();
 
@@ -41,6 +45,7 @@ async function addNewListHandler() {
 async function deleteList(listId: string) {
   // TODO: Ask for approval before removing!!!
   await listStore.deleteList(listId);
+  if (route.params.listId === listId) navigateTo("/dashboard");
 }
 </script>
 

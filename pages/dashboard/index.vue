@@ -1,6 +1,6 @@
 <template>
   <main>
-    dashboard
+    <h3>dashboard</h3>
     <!-- <TestComponent /> -->
   </main>
 </template>
