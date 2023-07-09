@@ -1,6 +1,8 @@
 <template>
-  <FormLogin v-if="showLogin" @toggleShowLogin="showLogin = $event" />
-  <FormSignup v-else @toggleShowLogin="showLogin = $event" />
+  <main>
+    <FormLogin v-if="showLogin" @toggleShowLogin="showLogin = $event" />
+    <FormSignup v-else @toggleShowLogin="showLogin = $event" />
+  </main>
 </template>
 
 <script setup>
