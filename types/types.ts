@@ -16,3 +16,7 @@ export type List = {
   createdAt: number;
   allowedUsers: (string | undefined)[];
 };
+
+export type ObjectOfLists = {
+  [key: string]: List;
+};

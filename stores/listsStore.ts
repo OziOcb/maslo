@@ -1,4 +1,4 @@
-import type { List } from "@/types/types";
+import type { List, ObjectOfLists } from "@/types/types";
 import {
   onSnapshot,
   collection,
@@ -10,13 +10,13 @@ import {
 const { addNewFirebaseDocument, deleteFirebaseDocument } = useFirebaseDb();
 
 interface State {
-  lists: List[];
+  lists: ObjectOfLists;
   unsubscribe: Unsubscribe | null;
 }
 
 export const useListsStore = defineStore("useListsStore", {
   state: (): State => ({
-    lists: [],
+    lists: {},
     unsubscribe: null,
   }),
 
@@ -30,11 +30,11 @@ export const useListsStore = defineStore("useListsStore", {
           where("authorID", "==", $auth.currentUser?.uid)
         );
         const unSub = onSnapshot(q, (snap) => {
-          const arr: List[] = [];
+          const obj: ObjectOfLists = {};
           snap.forEach((doc) => {
-            arr.push({ ...doc.data(), id: doc.id } as List);
+            obj[doc.id] = { ...(doc.data() as List), id: doc.id };
           });
-          this.lists = arr;
+          this.lists = obj;
         });
 
         this.unsubscribe = unSub;
