@@ -35,6 +35,7 @@ async function addNewListHandler() {
 }
 
 async function deleteList(listId: string) {
+  // TODO: Ask for approval before removing!!!
   await listStore.deleteList(listId);
 }
 </script>
