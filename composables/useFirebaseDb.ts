@@ -26,7 +26,8 @@ export default function () {
     try {
       const collectionRef = collection($firestore, collectionName);
       const data = { ...formData, authorID: $auth.currentUser?.uid };
-      await addDoc(collectionRef, data);
+      const res = await addDoc(collectionRef, data);
+      return res;
     } catch (e) {
       console.error("Error adding document: ", e);
     }

@@ -32,9 +32,10 @@ onUnmounted(() => {
 });
 
 async function addNewListHandler() {
-  await listStore.addNewList(newListName.value);
+  const res = await listStore.addNewList(newListName.value);
   newListName.value = "";
   isAddNewListModalVisible.value = false;
+  navigateTo(`/dashboard/list/${res?.id}`);
 }
 
 async function deleteList(listId: string) {

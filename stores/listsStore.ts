@@ -56,7 +56,11 @@ export const useListsStore = defineStore("useListsStore", {
         createdAt: Date.now(),
         allowedUsers: [currentUserUid],
       };
-      await addNewFirebaseDocument(`users/${currentUserUid}/lists`, listObj);
+      const res = await addNewFirebaseDocument(
+        `users/${currentUserUid}/lists`,
+        listObj
+      );
+      return res;
     },
 
     async deleteList(listId: string) {
