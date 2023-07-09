@@ -7,6 +7,7 @@ import {
   where,
   Unsubscribe,
 } from "firebase/firestore";
+const { addNewFirebaseDocument } = useFirebaseDb();
 
 interface State {
   lists: List[];
@@ -44,6 +45,18 @@ export const useListsStore = defineStore("useListsStore", {
 
     unsubscribeFromListsCollection() {
       if (this.unsubscribe) this.unsubscribe();
+    },
+
+    async addNewList(newListName: string) {
+      const { $auth } = useNuxtApp();
+      const currentUserUid = $auth.currentUser?.uid;
+
+      const listObj: List = {
+        name: newListName,
+        createdAt: Date.now(),
+        allowedUsers: [currentUserUid],
+      };
+      await addNewFirebaseDocument(`users/${currentUserUid}/lists`, listObj);
     },
   },
 });
