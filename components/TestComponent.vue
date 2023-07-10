@@ -100,7 +100,7 @@
   <ul v-if="players.length">
     <li v-for="player in players" :key="player.id">
       <div>playerId: {{ player.id }}</div>
-      <div>authorID: {{ player.authorID }}</div>
+      <div>authorId: {{ player.authorId }}</div>
       <span>{{ player.first }} {{ player.last }} - age: {{ player.age }}</span>
       <button @click="deletePlayerHandler(player.id)">delete</button>
     </li>
@@ -193,7 +193,7 @@ const DEFAULT_ADD_PLAYER_FORM = {
   first: "1",
   last: "1",
   age: Math.floor(Math.random() * 100),
-  authorID: "",
+  authorId: "",
 };
 const formAddPlayer = reactive({ ...DEFAULT_ADD_PLAYER_FORM });
 async function addNewPlayerHandler() {

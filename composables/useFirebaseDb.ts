@@ -25,7 +25,7 @@ export default function () {
     const { $firestore, $auth } = useNuxtApp();
     try {
       const collectionRef = collection($firestore, collectionName);
-      const data = { ...formData, authorID: $auth.currentUser?.uid };
+      const data = { ...formData, authorId: $auth.currentUser?.uid };
       const res = await addDoc(collectionRef, data);
       return res;
     } catch (e) {
@@ -44,7 +44,7 @@ export default function () {
     const { $firestore, $auth } = useNuxtApp();
     try {
       const docRef = doc($firestore, collectionName, documentId);
-      const data = { ...formData, authorID: $auth.currentUser?.uid };
+      const data = { ...formData, authorId: $auth.currentUser?.uid };
       await setDoc(docRef, data);
     } catch (e) {
       console.error("Error setting document: ", e);
@@ -116,7 +116,7 @@ export default function () {
       const q = query(
         collection($firestore, collectionName),
         orderBy(orderByKey),
-        where("authorID", "==", $auth.currentUser?.uid)
+        where("authorId", "==", $auth.currentUser?.uid)
       );
       const unSub = onSnapshot(q, (snap) => {
         const arr: T[] = [];
@@ -157,7 +157,7 @@ export default function () {
       const q = query(
         collection($firestore, collectionName),
         orderBy(orderByKey),
-        where("authorID", "==", $auth.currentUser?.uid),
+        where("authorId", "==", $auth.currentUser?.uid),
         where(key, operator, filterValue),
         limit(searchLimit)
       );

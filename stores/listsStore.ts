@@ -27,7 +27,7 @@ export const useListsStore = defineStore("useListsStore", {
         const q = query(
           collection($firestore, `users/${$auth.currentUser?.uid}/lists`),
           orderBy("createdAt"),
-          where("authorID", "==", $auth.currentUser?.uid)
+          where("authorId", "==", $auth.currentUser?.uid)
         );
         const unSub = onSnapshot(q, (snap) => {
           const obj: ObjectOfLists = {};
@@ -53,7 +53,7 @@ export const useListsStore = defineStore("useListsStore", {
 
       const listObj: List = {
         name: newListName,
-        createdAt: Date.now(),
+        createdAt: new Date(),
         allowedUsers: [currentUserUid],
       };
       const res = await addNewFirebaseDocument(
