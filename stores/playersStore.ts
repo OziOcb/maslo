@@ -27,6 +27,8 @@ export const usePlayersStore = defineStore("usePlayersStore", {
         `users/${currentUserUid}/players`,
         playerObj
       );
+
+      this.players.push({ ...playerObj, id: res!.id });
       return res;
     },
 

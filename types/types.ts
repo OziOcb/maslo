@@ -23,6 +23,7 @@ export type ObjectOfLists = {
 };
 
 export type PlayerObj = {
+  id?: string;
   authorId?: string;
   createdAt: Date;
   inLists: string[];
