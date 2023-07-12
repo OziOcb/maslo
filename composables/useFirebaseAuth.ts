@@ -8,6 +8,7 @@ import {
   User,
 } from "firebase/auth";
 import { useUserStore } from "@/stores/userStore";
+import { usePlayersStore } from "@/stores/playersStore";
 
 // TODO: Implement this - https://firebase.google.com/docs/auth/web/manage-users#send_a_user_a_verification_email
 export default function () {
@@ -50,11 +51,14 @@ export default function () {
 
   const watchForAuthChange = async () => {
     const userStore = useUserStore();
+    const playersStore = usePlayersStore();
     const unsubscribe = onAuthStateChanged($auth, (user) => {
       if (user) {
         userStore.user = user;
+        playersStore.subscribeToPlayersCollection();
       } else {
         userStore.$reset();
+        playersStore.unsubscribeFromPlayersCollection();
       }
     });
 

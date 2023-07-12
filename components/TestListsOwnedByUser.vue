@@ -31,7 +31,7 @@ const newListName = ref("");
 onMounted(() => {
   listStore.subscribeToListsCollection();
 });
-onUnmounted(() => {
+onBeforeUnmount(() => {
   listStore.unsubscribeFromListsCollection();
 });
 
