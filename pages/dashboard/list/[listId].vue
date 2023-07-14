@@ -7,6 +7,8 @@
     <ul>
       <li v-for="player in filteredPlayers" :key="player.id">
         {{ player.data.firstName }} {{ player.data.lastName }}
+        ---
+        <button @click="deletePlayerHandler(player.id)">delete</button>
       </li>
     </ul>
   </div>
@@ -33,4 +35,9 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
 
   return playersInThisGroup;
 });
+
+async function deletePlayerHandler(payerId: string) {
+  // TODO: Ask for approval before removing!!!
+  await playersStore.deletePlayer(payerId);
+}
 </script>

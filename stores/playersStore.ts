@@ -69,15 +69,14 @@ export const usePlayersStore = defineStore("usePlayersStore", {
       if (this.unsubscribe) this.unsubscribe();
     },
 
-    // TODO: ENDED HERE!
     // 4. Add options for deleting players
+    async deletePlayer(playerId: string) {
+      const { $auth } = useNuxtApp();
+      const currentUserUid = $auth.currentUser?.uid;
+      await deleteFirebaseDocument(`users/${currentUserUid}/players`, playerId);
+    },
+
     // 4b. When deleting list all of its players should be deleted as well
     // 5. Add options for filtering players (see [listId].vue line 26)
-
-    // async deletePlayer(listId: string) {
-    //   const { $auth } = useNuxtApp();
-    //   const currentUserUid = $auth.currentUser?.uid;
-    //   await deleteFirebaseDocument(`users/${currentUserUid}/lists`, listId);
-    // },
   },
 });
