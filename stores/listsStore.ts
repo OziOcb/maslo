@@ -7,6 +7,7 @@ import {
   where,
   Unsubscribe,
 } from "firebase/firestore";
+import { usePlayersStore } from "@/stores/playersStore";
 const { addNewFirebaseDocument, deleteFirebaseDocument } = useFirebaseDb();
 
 interface State {
@@ -63,9 +64,22 @@ export const useListsStore = defineStore("useListsStore", {
       return res;
     },
 
+    getPlayerIdsFromTheCurrentList(listId: string) {
+      const playersStore = usePlayersStore();
+      // prettier-ignore
+      return playersStore.players
+        .filter((player) => player.inLists.length === 1 && player.inLists[0] === listId)
+        .map((player) => player.id as string);
+    },
+
     async deleteList(listId: string) {
       const { $auth } = useNuxtApp();
+      const playersStore = usePlayersStore();
       const currentUserUid = $auth.currentUser?.uid;
+      const playerIds = this.getPlayerIdsFromTheCurrentList(listId);
+
+      if (playerIds.length) playersStore.deleteMultiplePlayers(playerIds);
+
       await deleteFirebaseDocument(`users/${currentUserUid}/lists`, listId);
     },
   },

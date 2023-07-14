@@ -2,11 +2,13 @@ import type { PlayerObj, PlayerData } from "@/types/types";
 const { addNewFirebaseDocument, deleteFirebaseDocument } = useFirebaseDb();
 import {
   collection,
+  doc,
   query,
   where,
   onSnapshot,
   orderBy,
   Unsubscribe,
+  writeBatch,
 } from "firebase/firestore";
 
 interface State {
@@ -77,6 +79,25 @@ export const usePlayersStore = defineStore("usePlayersStore", {
     },
 
     // 4b. When deleting list all of its players should be deleted as well
+    async deleteMultiplePlayers(playerIds: string[]) {
+      const { $auth, $firestore } = useNuxtApp();
+      const currentUserUid = $auth.currentUser?.uid;
+
+      // NOTE: A batched write can contain up to 500 operations!
+      const batch = writeBatch($firestore);
+      playerIds.forEach((playerId) => {
+        const docRef = doc(
+          $firestore,
+          `users/${currentUserUid}/players`,
+          playerId
+        );
+        batch.delete(docRef);
+      });
+
+      await batch.commit();
+    },
+
+    // TODO: ENDED HERE!
     // 5. Add options for filtering players (see [listId].vue line 26)
   },
 });
