@@ -8,7 +8,7 @@
       <li v-for="player in filteredPlayers" :key="player.id">
         {{ player.data.firstName }} {{ player.data.lastName }}
         ---
-        <button @click="deletePlayerHandler(player.id)">delete</button>
+        <button @click="deletePlayerHandler(player.id!)">delete</button>
       </li>
     </ul>
   </div>
