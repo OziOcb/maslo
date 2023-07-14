@@ -2,10 +2,12 @@
   <div style="display: flex">
     <button @click="isAddNewPlayerModalVisible = true">Add new Player</button>
 
-    <form v-if="isAddNewPlayerModalVisible" @submit.prevent="addPlayerHandler">
+    <!-- <form v-if="isAddNewPlayerModalVisible" @submit.prevent="addPlayerHandler"> -->
+    <form @submit.prevent="addPlayerHandler">
       <input v-model.trim="playerData.firstName" placeholder="first" />
       <input v-model.trim="playerData.lastName" placeholder="last" />
-      <button type="submit" :disabled="isSubmitDisabled">add</button>
+      <!-- <button type="submit" :disabled="isSubmitDisabled">add</button> -->
+      <button type="submit">add</button>
     </form>
   </div>
 </template>

@@ -11,6 +11,8 @@ import {
   writeBatch,
 } from "firebase/firestore";
 
+import { faker } from "@faker-js/faker"; // REMOVE_ME:
+
 interface State {
   players: PlayerObj[];
   unsubscribe: Unsubscribe | null;
@@ -31,8 +33,10 @@ export const usePlayersStore = defineStore("usePlayersStore", {
         createdAt: new Date(),
         inLists: [currentListId],
         data: {
-          firstName: playerData.firstName,
-          lastName: playerData.lastName,
+          // firstName: playerData.firstName,
+          // lastName: playerData.lastName,
+          firstName: faker.helpers.fake("{{person.firstName}}"), // REMOVE_ME
+          lastName: faker.helpers.fake("{{person.lastName}}"), // REMOVE_ME
         },
       };
       const res = await addNewFirebaseDocument(
@@ -97,7 +101,6 @@ export const usePlayersStore = defineStore("usePlayersStore", {
       await batch.commit();
     },
 
-    // TODO: ENDED HERE!
     // 5. Add options for filtering players (see [listId].vue line 26)
   },
 });
