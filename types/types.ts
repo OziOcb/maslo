@@ -33,4 +33,5 @@ export type PlayerObj = {
 export type PlayerData = {
   firstName: string;
   lastName: string;
+  age: number;
 };
