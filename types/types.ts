@@ -35,3 +35,5 @@ export type PlayerData = {
   lastName: string;
   age: number;
 };
+
+export type sortDirections = "ASC" | "DESC";
