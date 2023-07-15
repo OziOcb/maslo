@@ -7,6 +7,16 @@
       <input v-model.trim="playerData.firstName" placeholder="first" />
       <input v-model.trim="playerData.lastName" placeholder="last" />
       <input v-model.trim="playerData.age" placeholder="age" type="number" />
+      <select v-model="playerData.position" name="position" id="position">
+        <option value="">None</option>
+        <option
+          v-for="(position, key) in FootballPositions"
+          :value="key"
+          :key="key"
+        >
+          {{ key }} - {{ position }}
+        </option>
+      </select>
       <!-- <button type="submit" :disabled="isSubmitDisabled">add</button> -->
       <button type="submit">add</button>
     </form>
@@ -15,31 +25,55 @@
   <div>
     <h4>filters</h4>
 
-    <span>sortBy: </span>
-    <select v-model="playersStore.sortBy" name="sortBy" id="sortBy">
-      <option value="">None</option>
-      <option
-        v-for="key in Object.keys(DEFAULT_PLAYER_DATA)"
-        :value="key"
-        :key="key"
+    <section>
+      <span>sortBy: </span>
+      <select v-model="playersStore.sortBy" name="sortBy" id="sortBy">
+        <option value="">None</option>
+        <option
+          v-for="key in Object.keys(DEFAULT_PLAYER_DATA)"
+          :value="key"
+          :key="key"
+        >
+          {{ key }}
+        </option>
+      </select>
+
+      <br />
+
+      <template v-if="playersStore.sortBy">
+        <span>sortDirection</span>
+        <button @click="toggleSortDirectionHandler">
+          {{ playersStore.sortDirection === "ASC" ? "Up" : "Down" }}
+        </button>
+      </template>
+    </section>
+
+    <section>
+      <span>filterByPosition</span>
+      <select
+        v-model="playersStore.filerByPosition"
+        name="filterByPosition"
+        id="filterByPosition"
       >
-        {{ key }}
-      </option>
-    </select>
-
-    <br />
-
-    <template v-if="playersStore.sortBy">
-      <span>sortDirection</span>
-      <button @click="toggleSortDirectionHandler">
-        {{ playersStore.sortDirection === "ASC" ? "Up" : "Down" }}
-      </button>
-    </template>
+        <option value="">None</option>
+        <option
+          v-for="(position, key) in FootballPositions"
+          :value="key"
+          :key="key"
+        >
+          {{ key }} - {{ position }}
+        </option>
+      </select>
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { PlayerData } from "@/types/types";
+import {
+  FootballPositions,
+  FootballPositionsAbbreviations,
+} from "@/types/enums";
 import { usePlayersStore } from "@/stores/playersStore";
 const playersStore = usePlayersStore();
 
@@ -47,6 +81,7 @@ const DEFAULT_PLAYER_DATA = {
   firstName: "",
   lastName: "",
   age: 0,
+  position: FootballPositionsAbbreviations.DEFAULT,
 };
 
 const props = defineProps<{

@@ -1,4 +1,8 @@
 import type { PlayerObj, PlayerData, sortDirections } from "@/types/types";
+import {
+  FootballPositions,
+  FootballPositionsAbbreviations,
+} from "@/types/enums";
 const { addNewFirebaseDocument, deleteFirebaseDocument } = useFirebaseDb();
 import {
   collection,
@@ -17,6 +21,7 @@ interface State {
   players: PlayerObj[];
   sortBy: keyof PlayerData | "";
   sortDirection: sortDirections;
+  filerByPosition: FootballPositionsAbbreviations;
   unsubscribe: Unsubscribe | null;
 }
 
@@ -25,6 +30,7 @@ export const usePlayersStore = defineStore("usePlayersStore", {
     players: [],
     sortBy: "",
     sortDirection: "ASC",
+    filerByPosition: FootballPositionsAbbreviations.DEFAULT,
     unsubscribe: null,
   }),
 
@@ -40,6 +46,7 @@ export const usePlayersStore = defineStore("usePlayersStore", {
           // firstName: playerData.firstName,
           // lastName: playerData.lastName,
           // age: playerData.age,
+          position: playerData.position,
           firstName: faker.person.firstName(), // REMOVE_ME
           lastName: faker.person.lastName(), // REMOVE_ME
           age: faker.number.int({ max: 100 }), // REMOVE_ME
