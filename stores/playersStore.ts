@@ -38,7 +38,7 @@ export const usePlayersStore = defineStore("usePlayersStore", {
           // age: playerData.age,
           firstName: faker.person.firstName(), // REMOVE_ME
           lastName: faker.person.lastName(), // REMOVE_ME
-          age: faker.number.int({ max: 100 }),
+          age: faker.number.int({ max: 100 }), // REMOVE_ME
         },
       };
       const res = await addNewFirebaseDocument(

@@ -35,31 +35,17 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
   );
 
   if (sortBy.value)
-    players = sortData<PlayerObj>(players, sortBy.value, sortDirection.value);
+    players = utilSortArray<PlayerObj>(
+      players,
+      sortDirection.value,
+      "data",
+      sortBy.value
+    );
 
   return players;
 });
 
-// TODO: ENDED HERE!
-// 1. Move sortData to utils folder
 // 2. create toggle buttons for sortBy values
-const sortData = <T extends { [key: string]: any }>(
-  arr: T[],
-  param: string,
-  direction = "ASC"
-) => {
-  return direction == "ASC"
-    ? [...arr].sort((a, b) => {
-        if (a.data[param] < b.data[param]) return -1;
-        if (a.data[param] > b.data[param]) return 1;
-        return 0;
-      })
-    : [...arr].sort((a, b) => {
-        if (b.data[param] < a.data[param]) return -1;
-        if (b.data[param] > a.data[param]) return 1;
-        return 0;
-      });
-};
 
 async function deletePlayerHandler(payerId: string) {
   // TODO: Ask for approval before removing!!!
