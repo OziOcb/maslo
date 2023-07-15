@@ -11,6 +11,20 @@
       <button type="submit">add</button>
     </form>
   </div>
+
+  <div>
+    <h4>filters</h4>
+    <select v-model="playersStore.sortBy" name="sortBy" id="sortBy">
+      <option value="">None</option>
+      <option
+        v-for="key in Object.keys(DEFAULT_PLAYER_DATA)"
+        :value="key"
+        :key="key"
+      >
+        {{ key }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <script setup lang="ts">

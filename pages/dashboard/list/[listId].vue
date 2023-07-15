@@ -25,7 +25,6 @@ const route = useRoute();
 
 const listId = route.params.listId as string;
 const listName = computed(() => listsStore.lists[listId]?.name);
-const sortBy = ref("age");
 const sortDirection: Ref<sortDirections> = ref("ASC");
 
 // This computed will handle other filters like, position, age etc.
@@ -34,12 +33,12 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
     player.inLists.includes(listId)
   );
 
-  if (sortBy.value)
+  if (playersStore.sortBy)
     players = utilSortArray<PlayerObj>(
       players,
       sortDirection.value,
       "data",
-      sortBy.value
+      playersStore.sortBy
     );
 
   return players;

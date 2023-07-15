@@ -15,12 +15,14 @@ import { faker } from "@faker-js/faker"; // REMOVE_ME:
 
 interface State {
   players: PlayerObj[];
+  sortBy: keyof PlayerData | "";
   unsubscribe: Unsubscribe | null;
 }
 
 export const usePlayersStore = defineStore("usePlayersStore", {
   state: (): State => ({
     players: [],
+    sortBy: "",
     unsubscribe: null,
   }),
 
