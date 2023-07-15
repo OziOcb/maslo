@@ -1,4 +1,4 @@
-import type { PlayerObj, PlayerData } from "@/types/types";
+import type { PlayerObj, PlayerData, sortDirections } from "@/types/types";
 const { addNewFirebaseDocument, deleteFirebaseDocument } = useFirebaseDb();
 import {
   collection,
@@ -16,6 +16,7 @@ import { faker } from "@faker-js/faker"; // REMOVE_ME:
 interface State {
   players: PlayerObj[];
   sortBy: keyof PlayerData | "";
+  sortDirection: sortDirections;
   unsubscribe: Unsubscribe | null;
 }
 
@@ -23,6 +24,7 @@ export const usePlayersStore = defineStore("usePlayersStore", {
   state: (): State => ({
     players: [],
     sortBy: "",
+    sortDirection: "ASC",
     unsubscribe: null,
   }),
 

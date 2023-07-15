@@ -14,6 +14,8 @@
 
   <div>
     <h4>filters</h4>
+
+    <span>sortBy: </span>
     <select v-model="playersStore.sortBy" name="sortBy" id="sortBy">
       <option value="">None</option>
       <option
@@ -24,6 +26,15 @@
         {{ key }}
       </option>
     </select>
+
+    <br />
+
+    <template v-if="playersStore.sortBy">
+      <span>sortDirection</span>
+      <button @click="toggleSortDirectionHandler">
+        {{ playersStore.sortDirection === "ASC" ? "Up" : "Down" }}
+      </button>
+    </template>
   </div>
 </template>
 
@@ -52,5 +63,11 @@ async function addPlayerHandler() {
   await playersStore.addNewPlayer(props.listId, playerData.value);
   isAddNewPlayerModalVisible.value = false;
   playerData.value = { ...DEFAULT_PLAYER_DATA };
+}
+
+// 2. create toggle buttons for sortBy values
+function toggleSortDirectionHandler() {
+  playersStore.sortDirection =
+    playersStore.sortDirection === "ASC" ? "DESC" : "ASC";
 }
 </script>
