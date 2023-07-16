@@ -1,8 +1,5 @@
 import type { PlayerObj, PlayerData, sortDirections } from "@/types/types";
-import {
-  FootballPositions,
-  FootballPositionsAbbreviations,
-} from "@/types/enums";
+import { FootballPositionsAbbreviations } from "@/types/enums";
 const { addNewFirebaseDocument, deleteFirebaseDocument } = useFirebaseDb();
 import {
   collection,
@@ -60,8 +57,6 @@ export const usePlayersStore = defineStore("usePlayersStore", {
       return res;
     },
 
-    // 3. Display a list of players from this group (don't use onSnap)
-    // 3b. Unsubscribe form this listener each time user switches between lists
     subscribeToPlayersCollection() {
       const { $firestore, $auth } = useNuxtApp();
       try {
@@ -88,14 +83,12 @@ export const usePlayersStore = defineStore("usePlayersStore", {
       if (this.unsubscribe) this.unsubscribe();
     },
 
-    // 4. Add options for deleting players
     async deletePlayer(playerId: string) {
       const { $auth } = useNuxtApp();
       const currentUserUid = $auth.currentUser?.uid;
       await deleteFirebaseDocument(`users/${currentUserUid}/players`, playerId);
     },
 
-    // 4b. When deleting list all of its players should be deleted as well
     async deleteMultiplePlayers(playerIds: string[]) {
       const { $auth, $firestore } = useNuxtApp();
       const currentUserUid = $auth.currentUser?.uid;
@@ -113,7 +106,5 @@ export const usePlayersStore = defineStore("usePlayersStore", {
 
       await batch.commit();
     },
-
-    // 5. Add options for filtering players (see [listId].vue line 26)
   },
 });

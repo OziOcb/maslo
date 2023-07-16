@@ -65,6 +65,13 @@
         </option>
       </select>
     </section>
+
+    <button
+      v-if="playersStore.sortBy || playersStore.filerByPosition"
+      @click="resetAllFiltersHandler"
+    >
+      Reset All filters
+    </button>
   </div>
 </template>
 
@@ -100,9 +107,14 @@ async function addPlayerHandler() {
   playerData.value = { ...DEFAULT_PLAYER_DATA };
 }
 
-// 2. create toggle buttons for sortBy values
 function toggleSortDirectionHandler() {
   playersStore.sortDirection =
     playersStore.sortDirection === "ASC" ? "DESC" : "ASC";
+}
+
+function resetAllFiltersHandler() {
+  playersStore.sortBy = "";
+  playersStore.sortDirection = "ASC";
+  playersStore.filerByPosition = FootballPositionsAbbreviations.DEFAULT;
 }
 </script>
