@@ -2,8 +2,7 @@
   <div style="display: flex">
     <button @click="isAddNewPlayerModalVisible = true">Add new Player</button>
 
-    <!-- <form v-if="isAddNewPlayerModalVisible" @submit.prevent="addPlayerHandler"> -->
-    <form @submit.prevent="addPlayerHandler">
+    <form v-if="isAddNewPlayerModalVisible" @submit.prevent="addPlayerHandler">
       <input v-model.trim="playerData.firstName" placeholder="first" />
       <input v-model.trim="playerData.lastName" placeholder="last" />
       <input v-model.trim="playerData.age" placeholder="age" type="number" />
@@ -17,8 +16,7 @@
           {{ key }} - {{ position }}
         </option>
       </select>
-      <!-- <button type="submit" :disabled="isSubmitDisabled">add</button> -->
-      <button type="submit">add</button>
+      <button type="submit" :disabled="isSubmitDisabled">add</button>
     </form>
   </div>
 
@@ -107,7 +105,12 @@ const props = defineProps<{
 const playerData: Ref<PlayerData> = ref({ ...DEFAULT_PLAYER_DATA });
 const isAddNewPlayerModalVisible = ref(false);
 const isSubmitDisabled = computed(() => {
-  return !playerData.value.firstName || !playerData.value.lastName;
+  return (
+    !playerData.value.firstName ||
+    !playerData.value.lastName ||
+    !playerData.value.age ||
+    !playerData.value.position
+  );
 });
 
 async function addPlayerHandler() {

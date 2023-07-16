@@ -33,16 +33,16 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
   let playersArr = players.filter((player) => player.inLists.includes(listId));
 
   if (searchFor) {
-    const search = searchFor.toUpperCase();
+    const search = searchFor.toLowerCase();
 
     playersArr = playersArr.filter((player) => {
       const { firstName, lastName, age, position } = player.data;
 
       return (
-        firstName.toUpperCase().includes(search) ||
-        lastName.toUpperCase().includes(search) ||
-        age.toString().toUpperCase().includes(search) ||
-        position.toUpperCase().includes(search)
+        firstName.includes(search) ||
+        lastName.includes(search) ||
+        age.toString().includes(search) ||
+        position.toLowerCase().includes(search)
       );
     });
   }

@@ -12,8 +12,6 @@ import {
   writeBatch,
 } from "firebase/firestore";
 
-import { faker } from "@faker-js/faker"; // REMOVE_ME:
-
 interface State {
   players: PlayerObj[];
   searchFor: string;
@@ -42,13 +40,10 @@ export const usePlayersStore = defineStore("usePlayersStore", {
         createdAt: new Date(),
         inLists: [currentListId],
         data: {
-          // firstName: playerData.firstName,
-          // lastName: playerData.lastName,
-          // age: playerData.age,
+          firstName: playerData.firstName.toLowerCase(),
+          lastName: playerData.lastName.toLowerCase(),
+          age: playerData.age,
           position: playerData.position,
-          firstName: faker.person.firstName(), // REMOVE_ME
-          lastName: faker.person.lastName(), // REMOVE_ME
-          age: faker.number.int({ max: 100 }), // REMOVE_ME
         },
       };
       const res = await addNewFirebaseDocument(

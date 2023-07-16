@@ -12,7 +12,6 @@
     "vue": "latest"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2",
     "@nuxt/devtools": "latest",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@types/node": "^18",
