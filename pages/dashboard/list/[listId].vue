@@ -27,19 +27,25 @@ const listId = route.params.listId as string;
 const listName = computed(() => listsStore.lists[listId]?.name);
 
 const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
-  let players = playersStore.players.filter((player) =>
-    player.inLists.includes(listId)
-  );
+  const { players, sortBy, sortDirection, filerByPosition } = playersStore;
 
-  if (playersStore.sortBy)
-    players = utilSortArray<PlayerObj>(
-      players,
-      playersStore.sortDirection,
+  let playersArr = players.filter((player) => player.inLists.includes(listId));
+
+  if (filerByPosition) {
+    playersArr = players.filter(
+      (player) => player.data.position === filerByPosition
+    );
+  }
+
+  if (sortBy)
+    playersArr = utilSortArray<PlayerObj>(
+      playersArr,
+      sortDirection,
       "data",
       playersStore.sortBy
     );
 
-  return players;
+  return playersArr;
 });
 
 async function deletePlayerHandler(payerId: string) {
