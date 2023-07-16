@@ -26,6 +26,11 @@
     <h4>filters</h4>
 
     <section>
+      <span>Search for</span>
+      <input v-model="playersStore.searchFor" type="text" />
+    </section>
+
+    <section>
       <span>sortBy: </span>
       <select v-model="playersStore.sortBy" name="sortBy" id="sortBy">
         <option value="">None</option>
@@ -67,7 +72,11 @@
     </section>
 
     <button
-      v-if="playersStore.sortBy || playersStore.filerByPosition"
+      v-if="
+        playersStore.searchFor ||
+        playersStore.sortBy ||
+        playersStore.filerByPosition
+      "
       @click="resetAllFiltersHandler"
     >
       Reset All filters
@@ -113,6 +122,7 @@ function toggleSortDirectionHandler() {
 }
 
 function resetAllFiltersHandler() {
+  playersStore.searchFor = "";
   playersStore.sortBy = "";
   playersStore.sortDirection = "ASC";
   playersStore.filerByPosition = FootballPositionsAbbreviations.DEFAULT;

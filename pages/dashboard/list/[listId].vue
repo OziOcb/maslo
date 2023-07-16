@@ -27,12 +27,28 @@ const listId = route.params.listId as string;
 const listName = computed(() => listsStore.lists[listId]?.name);
 
 const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
-  const { players, sortBy, sortDirection, filerByPosition } = playersStore;
+  const { players, searchFor, sortBy, sortDirection, filerByPosition } =
+    playersStore;
 
   let playersArr = players.filter((player) => player.inLists.includes(listId));
 
+  if (searchFor) {
+    const search = searchFor.toUpperCase();
+
+    playersArr = playersArr.filter((player) => {
+      const { firstName, lastName, age, position } = player.data;
+
+      return (
+        firstName.toUpperCase().includes(search) ||
+        lastName.toUpperCase().includes(search) ||
+        age.toString().toUpperCase().includes(search) ||
+        position.toUpperCase().includes(search)
+      );
+    });
+  }
+
   if (filerByPosition) {
-    playersArr = players.filter(
+    playersArr = playersArr.filter(
       (player) => player.data.position === filerByPosition
     );
   }

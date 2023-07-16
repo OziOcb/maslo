@@ -16,6 +16,7 @@ import { faker } from "@faker-js/faker"; // REMOVE_ME:
 
 interface State {
   players: PlayerObj[];
+  searchFor: string;
   sortBy: keyof PlayerData | "";
   sortDirection: sortDirections;
   filerByPosition: FootballPositionsAbbreviations;
@@ -25,6 +26,7 @@ interface State {
 export const usePlayersStore = defineStore("usePlayersStore", {
   state: (): State => ({
     players: [],
+    searchFor: "",
     sortBy: "",
     sortDirection: "ASC",
     filerByPosition: FootballPositionsAbbreviations.DEFAULT,
