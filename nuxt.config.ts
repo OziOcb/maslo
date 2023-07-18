@@ -1,7 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
+  modules: [
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "vuetify-nuxt-module",
+  ],
   pinia: {
     autoImports: ["defineStore"],
   },
@@ -20,4 +24,11 @@ export default defineNuxtConfig({
     },
   },
   ssr: false,
+  vuetify: {
+    vuetifyOptions: {
+      theme: {
+        defaultTheme: "dark",
+      },
+    },
+  },
 });
