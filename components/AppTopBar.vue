@@ -1,6 +1,6 @@
 <template>
   <VAppBar>
-    <template v-slot:prepend v-if="route.name !== 'index'">
+    <template v-slot:prepend v-if="isNotIndexPage">
       <VAppBarNavIcon
         @click="globalStore.isDrawerOpen = !globalStore.isDrawerOpen"
       />
@@ -8,8 +8,10 @@
 
     <VAppBarTitle>My App</VAppBarTitle>
 
-    <template v-slot:append v-if="route.name !== 'index'">
-      <v-menu>
+    <template v-slot:append>
+      <v-btn :icon="themeTogglerIcon" @click="toggleTheme" />
+
+      <v-menu v-if="isNotIndexPage">
         <template v-slot:activator="{ props }">
           <v-btn icon="mdi-dots-vertical" v-bind="props" />
         </template>
@@ -29,7 +31,18 @@ import { useGlobalStore } from "@/stores/globalStore";
 const globalStore = useGlobalStore();
 
 const route = useRoute();
-const { signOutUser } = useFirebaseAuth();
+const isNotIndexPage = computed(() => route.name !== "index");
 
+const theme = useTheme();
+const themeTogglerIcon = computed(() =>
+  theme.global.current.value.dark
+    ? "mdi-white-balance-sunny"
+    : "mdi-weather-night"
+);
+function toggleTheme() {
+  theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
+}
+
+const { signOutUser } = useFirebaseAuth();
 const items = [{ title: "Logout", click: signOutUser }];
 </script>

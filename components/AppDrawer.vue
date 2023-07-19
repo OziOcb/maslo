@@ -21,6 +21,7 @@
 
     <template #append>
       <VBtn
+        flat
         class="ml-1 mb-1"
         :icon="rail ? 'mdi-chevron-right' : 'mdi-chevron-left'"
         @click.stop="rail = !rail"
