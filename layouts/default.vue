@@ -3,7 +3,9 @@
     <AppTopBar />
 
     <VMain>
-      <slot />
+      <VContainer>
+        <slot />
+      </VContainer>
     </VMain>
   </VApp>
 </template>

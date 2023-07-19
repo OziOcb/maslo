@@ -1,6 +1,4 @@
 <template>
-  <main>
-    <h3>dashboard</h3>
-    <!-- <TestComponent /> -->
-  </main>
+  <h3>dashboard</h3>
+  <!-- <TestComponent /> -->
 </template>

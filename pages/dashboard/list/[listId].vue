@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <h3>List name - {{ listName }}</h3>
+  <h3>List name - {{ listName }}</h3>
 
-    <TestPlayerControls :list-id="listId" />
+  <TestPlayerControls :list-id="listId" />
 
-    <ul>
-      <li v-for="player in filteredPlayers" :key="player.id">
-        {{ player.data.firstName }} {{ player.data.lastName }} ({{
-          player.data.age
-        }}) [{{ player.data.position }}] ---
-        <button @click="deletePlayerHandler(player.id!)">delete</button>
-      </li>
-    </ul>
-  </div>
+  <ul>
+    <li v-for="player in filteredPlayers" :key="player.id">
+      {{ player.data.firstName }} {{ player.data.lastName }} ({{
+        player.data.age
+      }}) [{{ player.data.position }}] ---
+      <button @click="deletePlayerHandler(player.id!)">delete</button>
+    </li>
+  </ul>
 </template>
 
 <script setup lang="ts">
