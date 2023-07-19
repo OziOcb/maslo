@@ -1,6 +1,7 @@
 <template>
   <VApp>
     <AppTopBar />
+    <AppDrawer />
 
     <VMain>
       <VContainer>

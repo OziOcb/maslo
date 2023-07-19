@@ -1,8 +1,9 @@
 <template>
   <VAppBar>
     <template v-slot:prepend v-if="route.name !== 'index'">
-      <!-- TODO: ENDED HERE! Add VNavigationDrawer on click -->
-      <VAppBarNavIcon />
+      <VAppBarNavIcon
+        @click="globalStore.isDrawerOpen = !globalStore.isDrawerOpen"
+      />
     </template>
 
     <VAppBarTitle>My App</VAppBarTitle>
@@ -24,6 +25,9 @@
 </template>
 
 <script setup lang="ts">
+import { useGlobalStore } from "@/stores/globalStore";
+const globalStore = useGlobalStore();
+
 const route = useRoute();
 const { signOutUser } = useFirebaseAuth();
 
