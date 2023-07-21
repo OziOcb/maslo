@@ -1,15 +1,37 @@
 <template>
-  <form @submit.prevent="login">
-    <h2>Log in</h2>
-    <input type="email" placeholder="Email" required v-model="email" />
-    <input type="password" placeholder="Password" required v-model="password" />
-    <button>Login</button>
-  </form>
+  <VCard title="Login" class="elevation-5">
+    <VCardText>
+      <!-- TODO: ENDED HERE! Use Vuetify's inputs below and then recreate the SignUp form (make sure that the submit buttons are disabled if inputs are empty) -->
+      <input type="email" placeholder="Email" required v-model="email" />
+      <input
+        type="password"
+        placeholder="Password"
+        required
+        v-model="password"
+      />
+    </VCardText>
 
-  <p>
+    <VCardActions>
+      <VBtn
+        class="flex-grow-1"
+        color="primary"
+        variant="outlined"
+        text="Login"
+        :loading="isLoading"
+        @click="loginHandler"
+      />
+    </VCardActions>
+  </VCard>
+
+  <div class="mt-4">
     No account yet?
-    <span @click="$emit('toggleShowLogin', false)">Sign up</span> instead.
-  </p>
+
+    <VBtn
+      variant="tonal"
+      text="Sign Up"
+      @click="$emit('toggleShowLogin', false)"
+    />
+  </div>
 </template>
 
 <script setup>
@@ -19,8 +41,11 @@ const { signInUser } = useFirebaseAuth();
 
 const email = ref("oz@oz.com");
 const password = ref("deskorolka");
+const isLoading = ref(false);
 
-async function login() {
+async function loginHandler() {
+  isLoading.value = true;
   await signInUser(email.value, password.value);
+  isLoading.value = false;
 }
 </script>
