@@ -6,7 +6,7 @@
     max-width="448"
     rounded="lg"
   >
-    <div class="text-subtitle-1 text-medium-emphasis">Account</div>
+    <VCardTitle class="pl-0">Log in</VCardTitle>
 
     <VTextField
       v-model="email"
@@ -57,7 +57,8 @@
       @click="loginHandler"
     />
 
-    <VCardText class="text-center">
+    <!-- TODO: https://trello.com/c/KVxe3dnf/4-feat-v2-logowanie-faza-3 -->
+    <!-- <VCardText class="text-center">
       <a
         class="text-blue text-decoration-none"
         href="#"
@@ -65,7 +66,7 @@
       >
         Sign up now <VIcon icon="mdi-chevron-right" />
       </a>
-    </VCardText>
+    </VCardText> -->
   </VCard>
 </template>
 
