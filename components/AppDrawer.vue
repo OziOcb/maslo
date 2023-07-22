@@ -1,5 +1,10 @@
 <template>
-  <VNavigationDrawer v-model="globalStore.isDrawerOpen" :rail="rail" permanent>
+  <VNavigationDrawer
+    v-model="globalStore.isDrawerOpen"
+    :temporary="xs"
+    :permanent="mdAndUp"
+    :rail="rail"
+  >
     <VListItem
       prepend-avatar="/img/account.svg"
       :title="userStore.user?.displayName"
@@ -36,6 +41,7 @@ import { useUserStore } from "@/stores/userStore";
 
 const globalStore = useGlobalStore();
 const userStore = useUserStore();
+const { xs, mdAndUp } = useDisplay();
 
 const rail = ref(false);
 const links = [
