@@ -1,7 +1,7 @@
 <template>
   <VContainer tag="section" class="pa-0">
     <VRow>
-      <VCol cols="12" sm="4" lg="2">
+      <VCol cols="12" sm="3" lg="2">
         <VCard title="Your Lists">
           <VTabs
             v-if="Object.keys(listStore.lists).length"
@@ -9,12 +9,22 @@
             color="primary"
           >
             <VTab
+              class="tab"
               v-for="list in listStore.lists"
               :key="list.id"
               :to="`/dashboard/players/list-${list.id}`"
               :value="list.id"
             >
               {{ list.name }}
+
+              <VBtn
+                class="tab__deleteBtn"
+                icon="mdi-trash-can"
+                color="red"
+                size="x-small"
+                variant="outlined"
+                @click.stop.prevent="deleteList(list.id!)"
+              />
             </VTab>
           </VTabs>
 
@@ -90,9 +100,32 @@ async function addNewListHandler() {
   navigateTo(`/dashboard/players/list-${res?.id}`);
 }
 
+// TODO: ENDED HERE! Ask before deleting a list
 async function deleteList(listId: string) {
-  // TODO: Ask for approval before removing!!!
   await listStore.deleteList(listId);
-  if (route.params.listId === listId) navigateTo("/dashboard");
+
+  if (route.params.listId === listId) {
+    const listKeys = Object.keys(listStore.lists);
+
+    listKeys.length
+      ? navigateTo(`/dashboard/players/list-${listKeys[0]}`)
+      : navigateTo("/dashboard/players");
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+.tab {
+  position: relative;
+
+  &__deleteBtn {
+    position: absolute;
+    right: 8px;
+    opacity: 0;
+
+    .tab:hover & {
+      opacity: 1;
+    }
+  }
+}
+</style>
