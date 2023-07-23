@@ -20,16 +20,38 @@
             >
               {{ list.name }}
 
-              <VBtn
-                class="tab__deleteBtn"
-                icon="mdi-trash-can"
-                color="red"
-                size="x-small"
-                variant="outlined"
-                @click.stop.prevent="
-                  toggleDeleteDialogHandler(true, list.id, list.name)
-                "
-              />
+              <VMenu>
+                <template v-slot:activator="{ props }">
+                  <VBtn
+                    class="tab__toggleMenuBtn"
+                    icon="mdi-dots-vertical"
+                    v-bind="props"
+                    color="info"
+                    size="x-small"
+                    variant="outlined"
+                    @click.stop.prevent=""
+                  />
+                </template>
+
+                <VList>
+                  <VListItem
+                    append-icon="mdi-pencil"
+                    title="edit"
+                    base-color="edit"
+                    @click="
+                      toggleDialogsHandler('edit', true, list.id, list.name)
+                    "
+                  />
+                  <VListItem
+                    append-icon="mdi-trash-can"
+                    title="delete"
+                    base-color="red"
+                    @click="
+                      toggleDialogsHandler('delete', true, list.id, list.name)
+                    "
+                  />
+                </VList>
+              </VMenu>
             </VTab>
           </VTabs>
 
@@ -37,7 +59,7 @@
             text="+ Add new list"
             class="ma-2"
             variant="tonal"
-            @click="isAddNewListDialogVisible = true"
+            @click="isAddOrEditListDialogVisible = true"
           />
         </VCard>
       </VCol>
@@ -49,16 +71,25 @@
     </VRow>
   </VContainer>
 
-  <VDialog v-model="isAddNewListDialogVisible" max-width="600px">
+  <VDialog
+    v-model="isAddOrEditListDialogVisible"
+    max-width="600px"
+    @update:modelValue="
+      toggleDialogsHandler(!isInEditMode ? 'add' : 'edit', false)
+    "
+  >
     <VCard>
       <VToolbar>
-        <VBtn icon="mdi-close" @click="isAddNewListDialogVisible = false" />
-        <VToolbarTitle text="Add New List" />
+        <VBtn
+          icon="mdi-close"
+          @click="toggleDialogsHandler(!isInEditMode ? 'add' : 'edit', false)"
+        />
+        <VToolbarTitle :text="!isInEditMode ? 'Add New List' : 'Edit List'" />
       </VToolbar>
 
       <VContainer>
         <VTextField
-          v-model="newListName"
+          v-model="currentListName"
           label="List Name"
           variant="underlined"
           clearable
@@ -67,30 +98,43 @@
 
       <VCardActions>
         <VBtn
+          v-if="!isInEditMode"
           text="Save"
           color="primary"
           block
-          :disabled="!newListName"
-          @click="addNewListHandler"
+          :disabled="!currentListName"
+          @click="addListHandler"
+        />
+        <VBtn
+          v-else
+          text="Save Changes"
+          color="primary"
+          block
+          :disabled="!currentListName || currentListName === tempListName"
+          @click="editListHandler"
         />
       </VCardActions>
     </VCard>
   </VDialog>
 
-  <VDialog v-model="isDeleteListDialogVisible" max-width="600px">
+  <VDialog
+    v-model="isDeleteListDialogVisible"
+    max-width="600px"
+    @update:modelValue="toggleDialogsHandler('delete', false)"
+  >
     <VCard>
       <VToolbar>
-        <VBtn icon="mdi-close" @click="isDeleteListDialogVisible = false" />
+        <VBtn icon="mdi-close" @click="toggleDialogsHandler('delete', false)" />
         <VToolbarTitle text="Are you sure?" />
       </VToolbar>
 
       <VContainer class="text-center">
         <p>Just to confirm, do you really want to delete this list?</p>
-        <p class="text-h4">{{ listToDeleteName }}</p>
+        <p class="text-h4">{{ currentListName }}</p>
       </VContainer>
 
       <VCardActions>
-        <VBtn text="Delete" color="red" block @click="deleteList" />
+        <VBtn text="Delete" color="red" block @click="deleteListHandler" />
       </VCardActions>
     </VCard>
   </VDialog>
@@ -101,11 +145,15 @@ import { useListsStore } from "@/stores/listsStore";
 const listStore = useListsStore();
 const route = useRoute();
 
-const isAddNewListDialogVisible = ref(false);
+const isAddOrEditListDialogVisible = ref(false);
 const isDeleteListDialogVisible = ref(false);
-const listToDeleteId = ref("");
-const listToDeleteName = ref("");
-const newListName = ref("");
+
+const isInEditMode = ref(false);
+const tempListName = ref("");
+
+const currentListId = ref("");
+const currentListName = ref("");
+
 const doesAnyListExist = computed(() => Object.keys(listStore.lists).length);
 
 onMounted(() => {
@@ -115,28 +163,42 @@ onBeforeUnmount(() => {
   listStore.unsubscribeFromListsCollection();
 });
 
-async function addNewListHandler() {
-  const res = await listStore.addNewList(newListName.value);
-  newListName.value = "";
-  isAddNewListDialogVisible.value = false;
+async function addListHandler() {
+  const res = await listStore.addNewList(currentListName.value);
+  toggleDialogsHandler("add", false);
   navigateTo(`/dashboard/players/list-${res?.id}`);
 }
 
-function toggleDeleteDialogHandler(
+// TODO: ENDED HERE! Finish this logic (use Firebase to edit name on the backend)
+async function editListHandler() {
+  // prettier-ignore
+  console.log("-\n--\n currentListName.value \n >", currentListName.value, "\n--\n-") // REMOVE_ME: remove when done!
+  toggleDialogsHandler("edit", false);
+}
+
+async function deleteListHandler() {
+  await listStore.deleteList(currentListId.value);
+  toggleDialogsHandler("delete", false);
+  if (route.params.listId === currentListId.value)
+    navigateTo(`/dashboard/players`);
+}
+
+function toggleDialogsHandler(
+  type: "add" | "delete" | "edit",
   isVisible: boolean,
   listId?: string,
   listName?: string
 ) {
-  isDeleteListDialogVisible.value = isVisible;
-  listToDeleteId.value = isVisible ? listId! : "";
-  listToDeleteName.value = isVisible ? listName! : "";
-}
+  if (type === "add") isAddOrEditListDialogVisible.value = isVisible;
+  if (type === "delete") isDeleteListDialogVisible.value = isVisible;
+  if (type === "edit") {
+    isAddOrEditListDialogVisible.value = isVisible;
+    tempListName.value = isVisible ? listName! : "";
+    isInEditMode.value = isVisible ? true : false;
+  }
 
-async function deleteList() {
-  await listStore.deleteList(listToDeleteId.value);
-  toggleDeleteDialogHandler(false);
-  if (route.params.listId === listToDeleteId.value)
-    navigateTo(`/dashboard/players`);
+  currentListId.value = isVisible ? listId! : "";
+  currentListName.value = isVisible ? listName! : "";
 }
 </script>
 
@@ -144,7 +206,7 @@ async function deleteList() {
 .tab {
   position: relative;
 
-  &__deleteBtn {
+  &__toggleMenuBtn {
     position: absolute;
     right: 8px;
     opacity: 0;
