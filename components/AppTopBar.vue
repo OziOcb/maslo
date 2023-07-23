@@ -9,19 +9,22 @@
     <VAppBarTitle>My App</VAppBarTitle>
 
     <template v-slot:append>
-      <v-btn :icon="themeTogglerIcon" @click="toggleTheme" />
+      <VBtn :icon="themeTogglerIcon" @click="toggleTheme" />
 
-      <v-menu v-if="isNotIndexPage">
+      <VMenu v-if="isNotIndexPage">
         <template v-slot:activator="{ props }">
-          <v-btn icon="mdi-dots-vertical" v-bind="props" />
+          <VBtn icon="mdi-dots-vertical" v-bind="props" />
         </template>
 
-        <v-list>
-          <v-list-item v-for="(item, i) in items" :key="i" @click="item.click">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+        <VList>
+          <VListItem
+            v-for="(item, i) in items"
+            :key="i"
+            @click="item.click"
+            :title="item.title"
+          />
+        </VList>
+      </VMenu>
     </template>
   </VAppBar>
 </template>
