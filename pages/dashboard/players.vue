@@ -1,6 +1,6 @@
 <template>
   <VAlert
-    v-if="!Object.keys(listStore.lists).length"
+    v-if="!doesAnyListExist"
     type="warning"
     text="It appears that you haven't created a list yet!"
     class="mb-4"
@@ -10,11 +10,7 @@
     <VRow>
       <VCol cols="12" sm="3" lg="2">
         <VCard title="Your Lists">
-          <VTabs
-            v-if="Object.keys(listStore.lists).length"
-            direction="vertical"
-            color="primary"
-          >
+          <VTabs direction="vertical" color="primary">
             <VTab
               class="tab"
               v-for="list in listStore.lists"
@@ -44,7 +40,8 @@
         </VCard>
       </VCol>
 
-      <VCol style="border: 1px solid red">
+      <VCol v-if="doesAnyListExist">
+        <p v-if="!route.params.listId">&lt;-- pick a list</p>
         <NuxtPage />
       </VCol>
     </VRow>
@@ -86,6 +83,7 @@ const route = useRoute();
 
 const isAddNewListModalVisible = ref(false);
 const newListName = ref("");
+const doesAnyListExist = computed(() => Object.keys(listStore.lists).length);
 
 onMounted(() => {
   listStore.subscribeToListsCollection();
@@ -101,17 +99,11 @@ async function addNewListHandler() {
   navigateTo(`/dashboard/players/list-${res?.id}`);
 }
 
-// TODO: ENDED HERE! Ask before deleting a list
+// TODO: ENDED HERE! 1. Ask before deleting a list
+// TODO: ENDED HERE! 2. Add functionality for editing existing lists (add the Edit button next to the List Name inside the /list-[listId].vue)
 async function deleteList(listId: string) {
   await listStore.deleteList(listId);
-
-  if (route.params.listId === listId) {
-    const listKeys = Object.keys(listStore.lists);
-
-    listKeys.length
-      ? navigateTo(`/dashboard/players/list-${listKeys[0]}`)
-      : navigateTo("/dashboard/players");
-  }
+  if (route.params.listId === listId) navigateTo(`/dashboard/players`);
 }
 </script>
 
