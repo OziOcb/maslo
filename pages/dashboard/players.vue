@@ -26,7 +26,9 @@
                 color="red"
                 size="x-small"
                 variant="outlined"
-                @click.stop.prevent="deleteList(list.id!)"
+                @click.stop.prevent="
+                  toggleDeleteDialogHandler(true, list.id, list.name)
+                "
               />
             </VTab>
           </VTabs>
@@ -35,7 +37,7 @@
             text="+ Add new list"
             class="ma-2"
             variant="tonal"
-            @click="isAddNewListModalVisible = true"
+            @click="isAddNewListDialogVisible = true"
           />
         </VCard>
       </VCol>
@@ -47,10 +49,10 @@
     </VRow>
   </VContainer>
 
-  <VDialog v-model="isAddNewListModalVisible" max-width="600px">
+  <VDialog v-model="isAddNewListDialogVisible" max-width="600px">
     <VCard>
       <VToolbar>
-        <VBtn icon="mdi-close" @click="isAddNewListModalVisible = false" />
+        <VBtn icon="mdi-close" @click="isAddNewListDialogVisible = false" />
         <VToolbarTitle text="Add New List" />
       </VToolbar>
 
@@ -74,6 +76,24 @@
       </VCardActions>
     </VCard>
   </VDialog>
+
+  <VDialog v-model="isDeleteListDialogVisible" max-width="600px">
+    <VCard>
+      <VToolbar>
+        <VBtn icon="mdi-close" @click="isDeleteListDialogVisible = false" />
+        <VToolbarTitle text="Are you sure?" />
+      </VToolbar>
+
+      <VContainer class="text-center">
+        <p>Just to confirm, do you really want to delete this list?</p>
+        <p class="text-h4">{{ listToDeleteName }}</p>
+      </VContainer>
+
+      <VCardActions>
+        <VBtn text="Delete" color="red" block @click="deleteList" />
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script setup lang="ts">
@@ -81,7 +101,10 @@ import { useListsStore } from "@/stores/listsStore";
 const listStore = useListsStore();
 const route = useRoute();
 
-const isAddNewListModalVisible = ref(false);
+const isAddNewListDialogVisible = ref(false);
+const isDeleteListDialogVisible = ref(false);
+const listToDeleteId = ref("");
+const listToDeleteName = ref("");
 const newListName = ref("");
 const doesAnyListExist = computed(() => Object.keys(listStore.lists).length);
 
@@ -95,15 +118,25 @@ onBeforeUnmount(() => {
 async function addNewListHandler() {
   const res = await listStore.addNewList(newListName.value);
   newListName.value = "";
-  isAddNewListModalVisible.value = false;
+  isAddNewListDialogVisible.value = false;
   navigateTo(`/dashboard/players/list-${res?.id}`);
 }
 
-// TODO: ENDED HERE! 1. Ask before deleting a list
-// TODO: ENDED HERE! 2. Add functionality for editing existing lists (add the Edit button next to the List Name inside the /list-[listId].vue)
-async function deleteList(listId: string) {
-  await listStore.deleteList(listId);
-  if (route.params.listId === listId) navigateTo(`/dashboard/players`);
+function toggleDeleteDialogHandler(
+  isVisible: boolean,
+  listId?: string,
+  listName?: string
+) {
+  isDeleteListDialogVisible.value = isVisible;
+  listToDeleteId.value = isVisible ? listId! : "";
+  listToDeleteName.value = isVisible ? listName! : "";
+}
+
+async function deleteList() {
+  await listStore.deleteList(listToDeleteId.value);
+  toggleDeleteDialogHandler(false);
+  if (route.params.listId === listToDeleteId.value)
+    navigateTo(`/dashboard/players`);
 }
 </script>
 
