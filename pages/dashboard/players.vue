@@ -1,4 +1,11 @@
 <template>
+  <VAlert
+    v-if="!Object.keys(listStore.lists).length"
+    type="warning"
+    text="It appears that you haven't created a list yet!"
+    class="mb-4"
+  />
+
   <VContainer tag="section" class="pa-0">
     <VRow>
       <VCol cols="12" sm="3" lg="2">
@@ -42,12 +49,6 @@
       </VCol>
     </VRow>
   </VContainer>
-
-  <VAlert
-    v-if="!Object.keys(listStore.lists).length"
-    type="warning"
-    text="It appears that you haven't created a list yet!"
-  />
 
   <VDialog v-model="isAddNewListModalVisible" max-width="600px">
     <VCard>
