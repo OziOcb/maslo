@@ -93,6 +93,7 @@
           label="List Name"
           variant="underlined"
           clearable
+          autofocus
           :disabled="isAnythingLoading"
           @keyup.enter="addListHandler"
         />
