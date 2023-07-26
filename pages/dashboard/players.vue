@@ -93,6 +93,8 @@
           label="List Name"
           variant="underlined"
           clearable
+          :disabled="isAnythingLoading"
+          @keyup.enter="addListHandler"
         />
       </VContainer>
 
@@ -102,7 +104,8 @@
           text="Save"
           color="primary"
           block
-          :disabled="!currentListName"
+          :disabled="!currentListName || isAnythingLoading"
+          :loading="isAnythingLoading"
           @click="addListHandler"
         />
         <VBtn
@@ -110,7 +113,12 @@
           text="Save Changes"
           color="primary"
           block
-          :disabled="!currentListName || currentListName === tempListName"
+          :disabled="
+            !currentListName ||
+            currentListName === tempListName ||
+            isAnythingLoading
+          "
+          :loading="isAnythingLoading"
           @click="editListHandler"
         />
       </VCardActions>
@@ -154,6 +162,7 @@ const tempListName = ref("");
 const currentListId = ref("");
 const currentListName = ref("");
 
+const isAnythingLoading = ref(false);
 const doesAnyListExist = computed(() => Object.keys(listStore.lists).length);
 
 onMounted(() => {
@@ -164,16 +173,20 @@ onBeforeUnmount(() => {
 });
 
 async function addListHandler() {
+  isAnythingLoading.value = true;
   const res = await listStore.addNewList(currentListName.value);
   toggleDialogsHandler("add", false);
   navigateTo(`/dashboard/players/list-${res?.id}`);
+  isAnythingLoading.value = false;
 }
 
 // TODO: ENDED HERE! Finish this logic (use Firebase to edit name on the backend)
 async function editListHandler() {
+  isAnythingLoading.value = true;
   // prettier-ignore
   console.log("-\n--\n currentListName.value \n >", currentListName.value, "\n--\n-") // REMOVE_ME: remove when done!
   toggleDialogsHandler("edit", false);
+  isAnythingLoading.value = false;
 }
 
 async function deleteListHandler() {
