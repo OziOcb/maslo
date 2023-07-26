@@ -82,7 +82,25 @@ export default function () {
       const docRef = doc($firestore, collectionName, documentId);
       await updateDoc(docRef, { [key]: newValue });
     } catch (e) {
-      console.error("Error adding document: ", e);
+      console.error("Error updating document: ", e);
+    }
+  };
+
+  // TODO: Probably this one will replace the updateFirebaseDocument (if so, remove any reference to the replaced function)
+  /**
+   * Using Firebase updateDoc method
+   */
+  const updateFirebaseDocumentObject = async (
+    collectionName: string,
+    documentId: string,
+    newValues: {}
+  ) => {
+    const { $firestore } = useNuxtApp();
+    try {
+      const docRef = doc($firestore, collectionName, documentId);
+      await updateDoc(docRef, newValues);
+    } catch (e) {
+      console.error("Error updating document: ", e);
     }
   };
 
@@ -180,6 +198,7 @@ export default function () {
     setNewFirebaseDocumentWithId,
     getFirebaseDocument,
     updateFirebaseDocument,
+    updateFirebaseDocumentObject,
     deleteFirebaseDocument,
     subscribeToFirebaseCollection,
     subscribeToFirebaseCollectionWithFilter,

@@ -95,7 +95,7 @@
           clearable
           autofocus
           :disabled="isAnythingLoading"
-          @keyup.enter="addListHandler"
+          @keyup.enter="!isInEditMode ? addListHandler() : editListHandler()"
         />
       </VContainer>
 
@@ -181,11 +181,11 @@ async function addListHandler() {
   isAnythingLoading.value = false;
 }
 
-// TODO: ENDED HERE! Finish this logic (use Firebase to edit name on the backend)
 async function editListHandler() {
   isAnythingLoading.value = true;
-  // prettier-ignore
-  console.log("-\n--\n currentListName.value \n >", currentListName.value, "\n--\n-") // REMOVE_ME: remove when done!
+  await listStore.updateList(currentListId.value, {
+    name: currentListName.value,
+  });
   toggleDialogsHandler("edit", false);
   isAnythingLoading.value = false;
 }
