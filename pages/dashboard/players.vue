@@ -224,9 +224,16 @@ function toggleDialogsHandler(
     position: absolute;
     right: 8px;
     opacity: 0;
+    border-color: transparent;
 
-    .tab:hover & {
+    .tab:hover &,
+    .tab:focus-within &,
+    .v-tab--selected & {
       opacity: 1;
+    }
+    &:hover,
+    &:focus {
+      border-color: initial;
     }
   }
 }
