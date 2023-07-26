@@ -8,7 +8,11 @@ import {
   Unsubscribe,
 } from "firebase/firestore";
 import { usePlayersStore } from "@/stores/playersStore";
-const { addNewFirebaseDocument, deleteFirebaseDocument } = useFirebaseDb();
+const {
+  addNewFirebaseDocument,
+  deleteFirebaseDocument,
+  updateFirebaseDocumentObject,
+} = useFirebaseDb();
 
 interface State {
   lists: ObjectOfLists;
@@ -60,6 +64,18 @@ export const useListsStore = defineStore("useListsStore", {
       const res = await addNewFirebaseDocument(
         `users/${currentUserUid}/lists`,
         listObj
+      );
+      return res;
+    },
+
+    async updateList(listId: string, dataObj: {}) {
+      const { $auth } = useNuxtApp();
+      const currentUserUid = $auth.currentUser?.uid;
+
+      const res = await updateFirebaseDocumentObject(
+        `users/${currentUserUid}/lists`,
+        listId,
+        dataObj
       );
       return res;
     },

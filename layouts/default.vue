@@ -1,21 +1,25 @@
 <template>
-  <div>
-    <div>default layout</div>
-    <button @click="signOutHandler">Sign Out</button>
-    <h1>Welcome {{ userStore.user?.displayName || "user" }}</h1>
-    <TestListsOwnedByUser />
+  <VApp>
+    <AppTopBar />
+    <AppDrawer />
 
-    <hr />
-    <slot />
-  </div>
+    <VMain>
+      <VContainer>
+        <slot />
+      </VContainer>
+    </VMain>
+  </VApp>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "@/stores/userStore";
-const userStore = useUserStore();
+// import { useUserStore } from "@/stores/userStore";
+// const userStore = useUserStore();
 
-const { signOutUser } = useFirebaseAuth();
-async function signOutHandler() {
-  await signOutUser();
-}
+const title = ref("OziOcb - My App");
+useHead({
+  meta: [{ content: title }],
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - My App` : "OziOcb - My App";
+  },
+});
 </script>

@@ -1,14 +1,10 @@
 <template>
-  <main>
+  <VRow class="d-flex flex-column align-center mt-8">
     <FormLogin v-if="showLogin" @toggleShowLogin="showLogin = $event" />
     <FormSignup v-else @toggleShowLogin="showLogin = $event" />
-  </main>
+  </VRow>
 </template>
 
 <script setup>
-definePageMeta({
-  layout: "login",
-});
-
 const showLogin = ref(true);
 </script>
