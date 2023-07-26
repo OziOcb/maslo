@@ -76,7 +76,7 @@ defineEmits(["toggleShowLogin"]);
 const { signInUser } = useFirebaseAuth();
 
 const email = ref("oz@oz.com");
-const password = ref("deskorolka");
+const password = ref("");
 const isPasswordVisible = ref(false);
 const isLoading = ref(false);
 
