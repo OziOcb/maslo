@@ -69,7 +69,7 @@ const { createUser } = useFirebaseAuth();
 
 const email = ref("oz@oz.com");
 const username = ref("oz");
-const password = ref("");
+const password = ref("deskorolka");
 
 const isPasswordVisible = ref(false);
 const isLoading = ref(false);
