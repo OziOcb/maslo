@@ -1,16 +1,13 @@
 <template>
-  <h3>List name - {{ listName }}</h3>
+  <VCard :title="listName">
+    <template v-slot:text>
+      <!-- <TestPlayerControls :list-id="listId" /> -->
 
-  <TestPlayerControls :list-id="listId" />
-
-  <ul>
-    <li v-for="player in filteredPlayers" :key="player.id">
-      {{ player.data.firstName }} {{ player.data.lastName }} ({{
-        player.data.age
-      }}) [{{ player.data.position }}] ---
-      <button @click="deletePlayerHandler(player.id!)">delete</button>
-    </li>
-  </ul>
+      <ul v-for="player in filteredPlayers" :key="player.id">
+        <PlayerItem :player="player" />
+      </ul>
+    </template>
+  </VCard>
 </template>
 
 <script setup lang="ts">
@@ -61,9 +58,4 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
 
   return playersArr;
 });
-
-async function deletePlayerHandler(payerId: string) {
-  // TODO: Ask for approval before removing!!!
-  await playersStore.deletePlayer(payerId);
-}
 </script>
