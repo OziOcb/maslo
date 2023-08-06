@@ -1,7 +1,7 @@
 <template>
   <VCard :title="listName">
     <template v-slot:text>
-      <!-- <TestPlayerControls :list-id="listId" /> -->
+      <TestPlayerControls :list-id="listId" />
 
       <ul class="playersList">
         <PlayerItem

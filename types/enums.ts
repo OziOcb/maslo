@@ -89,3 +89,10 @@ export enum FootballPositionsAbbreviations {
   ST = "ST",
   WF = "WF",
 }
+
+export enum LeadFoot {
+  DEFAULT = "",
+  LEFT = "left",
+  RIGHT = "right",
+  BOTH = "both",
+}

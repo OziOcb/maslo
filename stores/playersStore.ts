@@ -40,10 +40,17 @@ export const usePlayersStore = defineStore("usePlayersStore", {
         createdAt: new Date(),
         inLists: [currentListId],
         data: {
-          firstName: playerData.firstName.toLowerCase(),
-          lastName: playerData.lastName.toLowerCase(),
+          firstName: playerData.firstName?.toLowerCase(),
+          lastName: playerData.lastName?.toLowerCase(),
           age: playerData.age,
           position: playerData.position,
+          nationality: playerData.nationality,
+          club: playerData.club,
+          weight: playerData.weight,
+          height: playerData.height,
+          leadFoot: playerData.leadFoot,
+          seenAt: playerData.seenAt,
+          note: playerData.note,
         },
       };
       const res = await addNewFirebaseDocument(

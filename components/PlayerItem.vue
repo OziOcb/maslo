@@ -25,15 +25,12 @@
 
         <VContainer>
           <VRow>
-            <VCol cols="12" sm="6"
-              >Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Officiis repellat modi quae suscipit reprehenderit cumque
-              assumenda? Repudiandae quae fuga tenetur perferendis labore dolor,
-              officiis voluptate reprehenderit, doloribus ut, asperiores qui?
+            <VCol cols="12" sm="6">
+              {{ player.data }}
             </VCol>
 
-            <VCol cols="12" sm="6"
-              >Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste
+            <VCol cols="12" sm="6">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste
               minima suscipit, cupiditate sequi eveniet tenetur repudiandae,
               saepe accusamus perspiciatis reprehenderit placeat voluptatem
               ratione dolor error recusandae non quos tempore. Sit?

@@ -2,7 +2,11 @@
   <div style="display: flex">
     <button @click="isAddNewPlayerModalVisible = true">Add new Player</button>
 
-    <form v-if="isAddNewPlayerModalVisible" @submit.prevent="addPlayerHandler">
+    <form
+      v-if="isAddNewPlayerModalVisible"
+      @submit.prevent="addPlayerHandler"
+      style="display: flex; flex-direction: column"
+    >
       <input v-model.trim="playerData.firstName" placeholder="first" />
       <input v-model.trim="playerData.lastName" placeholder="last" />
       <input v-model.trim="playerData.age" placeholder="age" type="number" />
@@ -16,6 +20,21 @@
           {{ key }} - {{ position }}
         </option>
       </select>
+      <input v-model.trim="playerData.nationality" placeholder="nationality" />
+      <input v-model.trim="playerData.club" placeholder="club" />
+      <!-- prettier-ignore -->
+      <input v-model.trim="playerData.weight" placeholder="weight" type="number" />
+      <!-- prettier-ignore -->
+      <input v-model.trim="playerData.height" placeholder="height" type="number" />
+      <select v-model="playerData.leadFoot" name="leadFoot" id="leadFoot">
+        <option value="">None</option>
+        <option v-for="(foot, key) in LeadFoot" :value="key" :key="key">
+          {{ foot }}
+        </option>
+      </select>
+      <input v-model.trim="playerData.seenAt" placeholder="seen at" />
+      <textarea v-model.trim="playerData.note" placeholder="note" />
+
       <button type="submit" :disabled="isSubmitDisabled">add</button>
     </form>
   </div>
@@ -87,15 +106,23 @@ import type { PlayerData } from "@/types/types";
 import {
   FootballPositions,
   FootballPositionsAbbreviations,
+  LeadFoot,
 } from "@/types/enums";
 import { usePlayersStore } from "@/stores/playersStore";
 const playersStore = usePlayersStore();
 
-const DEFAULT_PLAYER_DATA = {
+const DEFAULT_PLAYER_DATA: PlayerData = {
   firstName: "",
   lastName: "",
   age: 0,
   position: FootballPositionsAbbreviations.DEFAULT,
+  nationality: "",
+  club: "",
+  weight: 0,
+  height: 0,
+  leadFoot: LeadFoot.DEFAULT,
+  seenAt: "",
+  note: "",
 };
 
 const props = defineProps<{
@@ -105,12 +132,13 @@ const props = defineProps<{
 const playerData: Ref<PlayerData> = ref({ ...DEFAULT_PLAYER_DATA });
 const isAddNewPlayerModalVisible = ref(false);
 const isSubmitDisabled = computed(() => {
-  return (
-    !playerData.value.firstName ||
-    !playerData.value.lastName ||
-    !playerData.value.age ||
-    !playerData.value.position
-  );
+  return !playerData.value.firstName;
+  // return (
+  //   !playerData.value.firstName ||
+  //   !playerData.value.lastName ||
+  //   !playerData.value.age ||
+  //   !playerData.value.position
+  // );
 });
 
 async function addPlayerHandler() {
