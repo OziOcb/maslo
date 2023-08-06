@@ -9,7 +9,7 @@
       class="d-flex"
     >
       <VAvatar
-        class="ml-2 mt-3 d-none d-sm-flex"
+        class="d-none d-sm-flex ml-2 mt-3"
         size="50"
         circle
         color="primary"
@@ -18,22 +18,29 @@
         GK
       </VAvatar>
 
-      <div>
+      <div class="w-100">
         <VCardTitle class="text-h6">
-          {{ player.data.firstName }} {{ player.data.lastName }}
+          {{ pData.firstName }} {{ pData.lastName }}
         </VCardTitle>
 
         <VContainer>
           <VRow>
             <VCol cols="12" sm="6">
-              {{ player.data }}
+              <ul class="playerDetailsList">
+                <DetailsListItem title="Nationality" :val="pData.nationality" />
+                <DetailsListItem title="Club" :val="pData.club" />
+                <DetailsListItem title="Age" :val="pData.age" />
+                <DetailsListItem title="Lead Foot" :val="pData.leadFoot" />
+              </ul>
             </VCol>
 
             <VCol cols="12" sm="6">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste
-              minima suscipit, cupiditate sequi eveniet tenetur repudiandae,
-              saepe accusamus perspiciatis reprehenderit placeat voluptatem
-              ratione dolor error recusandae non quos tempore. Sit?
+              <ul class="playerDetailsList">
+                <DetailsListItem title="Position" :val="pData.position" />
+                <DetailsListItem title="Weight" :val="pData.weight" />
+                <DetailsListItem title="Height" :val="pData.height" />
+                <DetailsListItem title="Seen At" :val="pData.seenAt" />
+              </ul>
             </VCol>
           </VRow>
         </VContainer>
@@ -52,12 +59,20 @@ import { usePlayersStore } from "@/stores/playersStore";
 
 const playersStore = usePlayersStore();
 
-defineProps<{
+const props = defineProps<{
   player: PlayerObj;
 }>();
+
+const pData = props.player.data;
 
 async function deletePlayerHandler(payerId: string) {
   // TODO: Ask for approval before removing!!!
   await playersStore.deletePlayer(payerId);
 }
 </script>
+
+<style lang="scss" scoped>
+.playerDetailsList {
+  list-style: none;
+}
+</style>

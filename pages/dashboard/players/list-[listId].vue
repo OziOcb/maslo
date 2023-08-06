@@ -1,7 +1,7 @@
 <template>
   <VCard :title="listName">
     <template v-slot:text>
-      <TestPlayerControls :list-id="listId" />
+      <!-- <TestPlayerControls :list-id="listId" /> -->
 
       <ul class="playersList">
         <PlayerItem
@@ -38,10 +38,10 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
       const { firstName, lastName, age, position } = player.data;
 
       return (
-        firstName.includes(search) ||
-        lastName.includes(search) ||
-        age.toString().includes(search) ||
-        position.toLowerCase().includes(search)
+        firstName?.includes(search) ||
+        lastName?.includes(search) ||
+        age?.toString().includes(search) ||
+        position?.toLowerCase().includes(search)
       );
     });
   }

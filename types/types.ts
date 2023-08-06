@@ -39,8 +39,8 @@ export type PlayerData = {
   position?: FootballPositionsAbbreviations;
   nationality?: string;
   club?: string;
-  weight?: number;
-  height?: number;
+  weight?: string;
+  height?: string;
   leadFoot?: LeadFoot;
   seenAt?: string;
   note?: string;

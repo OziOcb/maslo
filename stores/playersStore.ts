@@ -46,12 +46,12 @@ export const usePlayersStore = defineStore("usePlayersStore", {
           position: playerData.position,
           nationality: playerData.nationality,
           club: playerData.club,
-          weight: playerData.weight,
-          height: playerData.height,
+          weight: playerData.weight + "kg", // TODO: 'kg' should be global variable
+          height: playerData.height + "cm", // TODO: 'cm' should be global variable
           leadFoot: playerData.leadFoot,
           seenAt: playerData.seenAt,
           note: playerData.note,
-        },
+        } as PlayerData,
       };
       const res = await addNewFirebaseDocument(
         `users/${currentUserUid}/players`,
