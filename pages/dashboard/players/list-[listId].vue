@@ -3,8 +3,12 @@
     <template v-slot:text>
       <!-- <TestPlayerControls :list-id="listId" /> -->
 
-      <ul v-for="player in filteredPlayers" :key="player.id">
-        <PlayerItem :player="player" />
+      <ul class="playersList">
+        <PlayerItem
+          v-for="player in filteredPlayers"
+          :key="player.id"
+          :player="player"
+        />
       </ul>
     </template>
   </VCard>
@@ -59,3 +63,11 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
   return playersArr;
 });
 </script>
+
+<style lang="scss" scoped>
+.playersList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+</style>
