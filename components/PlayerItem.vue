@@ -45,13 +45,17 @@
         </VContainer>
 
         <VCardActions class="justify-space-between">
-          <VBtn color="primary">More</VBtn>
+          <VBtn
+            color="primary"
+            text="More"
+            @click="$emit('showMore', player.id)"
+          />
 
           <div>
             <VBtn
               variant="plain"
               size="small"
-              @click="toggleDialogsHandler('edit', true, list.id, list.name)"
+              @click="$emit('editPlayer', player.id)"
             >
               <VIcon icon="mdi-pencil" />
               <VTooltip
@@ -66,7 +70,7 @@
               color="error"
               variant="plain"
               size="small"
-              @click="toggleDialogsHandler('delete', true, list.id, list.name)"
+              @click="$emit('deletePlayer', player.id)"
             >
               <VIcon icon="mdi-trash-can" />
               <VTooltip
@@ -85,9 +89,12 @@
 
 <script setup lang="ts">
 import type { PlayerObj } from "@/types/types";
-import { usePlayersStore } from "@/stores/playersStore";
 
-const playersStore = usePlayersStore();
+defineEmits<{
+  (event: "editPlayer", playerId: string): void;
+  (event: "deletePlayer", playerId: string): void;
+  (event: "showMore", playerId: string): void;
+}>();
 
 const props = defineProps<{
   player: PlayerObj;
@@ -95,13 +102,7 @@ const props = defineProps<{
 
 const pData = props.player.data;
 // prettier-ignore
-const playerInitials =
-  `${pData.firstName?.slice(0, 1)}${pData.lastName?.slice(0, 1)}`.toUpperCase();
-
-async function deletePlayerHandler(payerId: string) {
-  // TODO: Ask for approval before removing!!!
-  await playersStore.deletePlayer(payerId);
-}
+const playerInitials = `${pData.firstName?.slice(0, 1)}${pData.lastName?.slice(0, 1)}`.toUpperCase();
 </script>
 
 <style lang="scss" scoped>

@@ -1,9 +1,6 @@
 <template>
   <VCard :title="listName">
     <template v-slot:text>
-      <!-- TODO: ENDED HERE! 1. After clicking More button display dialog with all the info about the player -->
-      <!-- TODO: ENDED HERE! 2. create Add Player button and form inside dialog (create PlayersControls.vue) -->
-      <!-- TODO: ENDED HERE! 3. create functionality for the Edit and Remove buttons (display dialogs!)-->
       <!-- <TestPlayerControls :list-id="listId" /> -->
 
       <ul class="playersList">
@@ -11,6 +8,9 @@
           v-for="player in filteredPlayers"
           :key="player.id"
           :player="player"
+          @edit-player="toggleDialogsHandler('edit', true, $event)"
+          @delete-player="toggleDialogsHandler('delete', true, $event)"
+          @show-more="toggleDialogsHandler('showMore', true, $event)"
         />
       </ul>
     </template>
@@ -65,6 +65,28 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
 
   return playersArr;
 });
+
+// TODO: ENDED HERE!
+// TODO: ENDED HERE!
+// TODO: ENDED HERE! Create VDialogs for each type and display them accordingly
+// TODO: ENDED HERE!
+// TODO: ENDED HERE!
+function toggleDialogsHandler(
+  type: "add" | "delete" | "edit" | "showMore",
+  isVisible: boolean,
+  playerId?: string
+) {
+  // prettier-ignore
+  console.log("-\n--\n type \n >", type, "\n--\n-") // REMOVE_ME: remove when done!
+  // prettier-ignore
+  console.log("-\n--\n isVisible \n >", isVisible, "\n--\n-") // REMOVE_ME: remove when done!
+  // prettier-ignore
+  console.log("-\n--\n playerId \n >", playerId, "\n--\n-") // REMOVE_ME: remove when done!
+}
+
+async function deletePlayerHandler(payerId: string) {
+  await playersStore.deletePlayer(payerId);
+}
 </script>
 
 <style lang="scss" scoped>
