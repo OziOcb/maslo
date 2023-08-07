@@ -45,45 +45,36 @@
         </VContainer>
 
         <VCardActions class="justify-space-between">
-          <!-- <VBtn @click="deletePlayerHandler(player.id!)">delete</VBtn> -->
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! 1. After clicking More button display dialog with all the info about the player -->
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! -->
           <VBtn color="primary">More</VBtn>
 
-          <VMenu>
-            <template v-slot:activator="{ props }">
-              <VBtn
-                class="toggleMenuBtn"
-                icon="mdi-dots-vertical"
-                v-bind="props"
-                color="info"
-                size="x-small"
-                variant="outlined"
+          <div>
+            <VBtn
+              variant="plain"
+              @click="toggleDialogsHandler('edit', true, list.id, list.name)"
+            >
+              <VIcon icon="mdi-pencil" />
+              <VTooltip
+                activator="parent"
+                location="top"
+                text="edit"
+                offset="2"
               />
-            </template>
+            </VBtn>
 
-            <VList>
-              <VListItem
-                append-icon="mdi-pencil"
-                title="edit"
-                base-color="edit"
-                @click="toggleDialogsHandler('edit', true, list.id, list.name)"
+            <VBtn
+              color="error"
+              variant="plain"
+              @click="toggleDialogsHandler('delete', true, list.id, list.name)"
+            >
+              <VIcon icon="mdi-trash-can" />
+              <VTooltip
+                activator="parent"
+                location="top"
+                text="delete"
+                offset="2"
               />
-              <VListItem
-                append-icon="mdi-trash-can"
-                title="delete"
-                base-color="red"
-                @click="
-                  toggleDialogsHandler('delete', true, list.id, list.name)
-                "
-              />
-            </VList>
-          </VMenu>
+            </VBtn>
+          </div>
         </VCardActions>
       </div>
     </VCard>

@@ -1,6 +1,7 @@
 <template>
   <VCard :title="listName">
     <template v-slot:text>
+      <!-- TODO: ENDED HERE! 1. After clicking More button display dialog with all the info about the player -->
       <!-- TODO: ENDED HERE! 2. create Add Player button and form inside dialog (create PlayersControls.vue) -->
       <!-- TODO: ENDED HERE! 3. create functionality for the Edit and Remove buttons (display dialogs!)-->
       <!-- <TestPlayerControls :list-id="listId" /> -->
