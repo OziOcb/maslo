@@ -3,8 +3,7 @@
     <VCard
       v-bind="props"
       tag="li"
-      :color="isHovering ? 'grey-darken-3' : undefined"
-      :elevation="isHovering ? 12 : 2"
+      :elevation="!isHovering ? 2 : 6"
       dense
       class="d-flex"
     >
@@ -45,8 +44,46 @@
           </VRow>
         </VContainer>
 
-        <VCardActions class="justify-end">
-          <VBtn @click="deletePlayerHandler(player.id!)">delete</VBtn>
+        <VCardActions class="justify-space-between">
+          <!-- <VBtn @click="deletePlayerHandler(player.id!)">delete</VBtn> -->
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! 1. After clicking More button display dialog with all the info about the player -->
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! -->
+          <VBtn color="primary">More</VBtn>
+
+          <VMenu>
+            <template v-slot:activator="{ props }">
+              <VBtn
+                class="toggleMenuBtn"
+                icon="mdi-dots-vertical"
+                v-bind="props"
+                color="info"
+                size="x-small"
+                variant="outlined"
+              />
+            </template>
+
+            <VList>
+              <VListItem
+                append-icon="mdi-pencil"
+                title="edit"
+                base-color="edit"
+                @click="toggleDialogsHandler('edit', true, list.id, list.name)"
+              />
+              <VListItem
+                append-icon="mdi-trash-can"
+                title="delete"
+                base-color="red"
+                @click="
+                  toggleDialogsHandler('delete', true, list.id, list.name)
+                "
+              />
+            </VList>
+          </VMenu>
         </VCardActions>
       </div>
     </VCard>
@@ -77,5 +114,13 @@ async function deletePlayerHandler(payerId: string) {
 <style lang="scss" scoped>
 .playerDetailsList {
   list-style: none;
+}
+
+.toggleMenuBtn {
+  border-color: transparent;
+  &:hover,
+  &:focus {
+    border-color: initial;
+  }
 }
 </style>
