@@ -50,6 +50,7 @@
           <div>
             <VBtn
               variant="plain"
+              size="small"
               @click="toggleDialogsHandler('edit', true, list.id, list.name)"
             >
               <VIcon icon="mdi-pencil" />
@@ -64,6 +65,7 @@
             <VBtn
               color="error"
               variant="plain"
+              size="small"
               @click="toggleDialogsHandler('delete', true, list.id, list.name)"
             >
               <VIcon icon="mdi-trash-can" />
