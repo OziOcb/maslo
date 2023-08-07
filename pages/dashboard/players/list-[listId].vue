@@ -1,6 +1,15 @@
 <template>
-  <VCard :title="listName">
-    <template v-slot:text>
+  <VCard>
+    <VToolbar class="justify-justify-space-between">
+      <VToolbarTitle :text="listName" class="text-capitalize" />
+      <VBtn
+        variant="tonal"
+        :text="!mdAndUp ? '+' : '+ Add Player'"
+        @click="toggleDialogsHandler('add', true)"
+      />
+    </VToolbar>
+
+    <VContainer>
       <!-- <TestPlayerControls :list-id="listId" /> -->
 
       <ul class="playersList">
@@ -13,14 +22,95 @@
           @show-more="toggleDialogsHandler('showMore', true, $event)"
         />
       </ul>
-    </template>
+    </VContainer>
   </VCard>
+
+  <VDialog
+    v-model="isShowPlayerDialogVisible"
+    :max-width="!mdAndUp ? '100%' : '50%'"
+    scrollable
+    @update:modelValue="toggleDialogsHandler('showMore', false)"
+  >
+    <VCard>
+      <VToolbar>
+        <VBtn
+          icon="mdi-close"
+          @click="toggleDialogsHandler('showMore', false)"
+        />
+        <VToolbarTitle
+          class="text-capitalize"
+          :text="`${pData?.firstName} ${pData?.lastName}`"
+        />
+      </VToolbar>
+
+      <VContainer class="text-center">
+        <ul class="playerDetailsList">
+          <DetailsListItem title="Nationality" :val="pData?.nationality" />
+          <DetailsListItem title="Club" :val="pData?.club" />
+          <DetailsListItem title="Age" :val="pData?.age" />
+          <DetailsListItem title="Lead Foot" :val="pData?.leadFoot" />
+          <DetailsListItem title="Position" :val="pData?.position" />
+          <DetailsListItem title="Weight" :val="pData?.weight" />
+          <DetailsListItem title="Height" :val="pData?.height" />
+          <DetailsListItem title="Seen At" :val="pData?.seenAt" />
+          <DetailsListItem title="Notes" :val="pData?.note" class="mt-6" />
+        </ul>
+      </VContainer>
+
+      <!-- TODO: Add this action buttons -->
+      <!-- <VCardActions class="justify-end">
+        <VBtn variant="plain" size="small" @click="">
+          <VIcon icon="mdi-pencil" />
+          <VTooltip activator="parent" location="top" text="edit" offset="2" />
+        </VBtn>
+
+        <VBtn color="error" variant="plain" size="small" @click="">
+          <VIcon icon="mdi-trash-can" />
+          <VTooltip
+            activator="parent"
+            location="top"
+            text="delete"
+            offset="2"
+          />
+        </VBtn>
+      </VCardActions> -->
+    </VCard>
+  </VDialog>
+
+  <VDialog
+    v-model="isAddOrEditPlayerDialogVisible"
+    :max-width="!mdAndUp ? '100%' : '50%'"
+    scrollable
+    @update:modelValue="toggleDialogsHandler('add', false)"
+  >
+    <VCard>
+      <VToolbar>
+        <VBtn icon="mdi-close" @click="toggleDialogsHandler('add', false)" />
+        <VToolbarTitle text="Add New Player" />
+      </VToolbar>
+
+      <!-- TODO: ENDED HERE! -->
+      <!-- TODO: ENDED HERE! -->
+      <!-- TODO: ENDED HERE! Create Form for adding players -->
+      <!-- TODO: ENDED HERE! -->
+      <!-- TODO: ENDED HERE! -->
+      <VContainer class="text-center">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia porro
+        quia itaque fugit rem aliquid odio eos, tenetur at voluptate numquam qui
+        magni possimus quasi, maxime maiores architecto mollitia laborum?
+      </VContainer>
+
+      <VCardActions> actions </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script setup lang="ts">
 import type { PlayerObj } from "@/types/types";
 import { useListsStore } from "@/stores/listsStore";
 import { usePlayersStore } from "@/stores/playersStore";
+import { useDisplay } from "vuetify";
+const { mdAndUp } = useDisplay();
 const listsStore = useListsStore();
 const playersStore = usePlayersStore();
 const route = useRoute();
@@ -66,22 +156,27 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
   return playersArr;
 });
 
-// TODO: ENDED HERE!
-// TODO: ENDED HERE!
-// TODO: ENDED HERE! Create VDialogs for each type and display them accordingly
-// TODO: ENDED HERE!
-// TODO: ENDED HERE!
+const isShowPlayerDialogVisible = ref(false);
+const isAddOrEditPlayerDialogVisible = ref(false);
+const isDeletePlayerDialogVisible = ref(false);
+const isInEditMode = ref(false);
+const currentPlayer = ref<PlayerObj>();
+const pData = computed(() => currentPlayer.value?.data);
+
 function toggleDialogsHandler(
   type: "add" | "delete" | "edit" | "showMore",
   isVisible: boolean,
-  playerId?: string
+  player?: PlayerObj
 ) {
-  // prettier-ignore
-  console.log("-\n--\n type \n >", type, "\n--\n-") // REMOVE_ME: remove when done!
-  // prettier-ignore
-  console.log("-\n--\n isVisible \n >", isVisible, "\n--\n-") // REMOVE_ME: remove when done!
-  // prettier-ignore
-  console.log("-\n--\n playerId \n >", playerId, "\n--\n-") // REMOVE_ME: remove when done!
+  if (type === "showMore") isShowPlayerDialogVisible.value = isVisible;
+  if (type === "add") isAddOrEditPlayerDialogVisible.value = isVisible;
+  if (type === "delete") isDeletePlayerDialogVisible.value = isVisible;
+  if (type === "edit") {
+    isAddOrEditPlayerDialogVisible.value = isVisible;
+    isInEditMode.value = isVisible ? true : false;
+  }
+
+  currentPlayer.value = isVisible ? player! : undefined;
 }
 
 async function deletePlayerHandler(payerId: string) {
@@ -94,5 +189,10 @@ async function deletePlayerHandler(payerId: string) {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.playerDetailsList {
+  list-style: none;
+  text-align: left;
 }
 </style>

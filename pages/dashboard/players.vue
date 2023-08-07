@@ -9,7 +9,11 @@
   <VContainer tag="section" class="pa-0">
     <VRow>
       <VCol cols="12" sm="3" lg="2">
-        <VCard title="Your Lists">
+        <VCard>
+          <VToolbar>
+            <VToolbarTitle text="Your Lists" />
+          </VToolbar>
+
           <VTabs direction="vertical" color="primary">
             <VTab
               class="tab"

@@ -48,14 +48,14 @@
           <VBtn
             color="primary"
             text="More"
-            @click="$emit('showMore', player.id)"
+            @click="$emit('showMore', player)"
           />
 
           <div>
             <VBtn
               variant="plain"
               size="small"
-              @click="$emit('editPlayer', player.id)"
+              @click="$emit('editPlayer', player)"
             >
               <VIcon icon="mdi-pencil" />
               <VTooltip
@@ -70,7 +70,7 @@
               color="error"
               variant="plain"
               size="small"
-              @click="$emit('deletePlayer', player.id)"
+              @click="$emit('deletePlayer', player)"
             >
               <VIcon icon="mdi-trash-can" />
               <VTooltip
@@ -91,9 +91,9 @@
 import type { PlayerObj } from "@/types/types";
 
 defineEmits<{
-  (event: "editPlayer", playerId: string): void;
-  (event: "deletePlayer", playerId: string): void;
-  (event: "showMore", playerId: string): void;
+  (event: "editPlayer", player: PlayerObj): void;
+  (event: "deletePlayer", player: PlayerObj): void;
+  (event: "showMore", player: PlayerObj): void;
 }>();
 
 const props = defineProps<{
