@@ -15,7 +15,7 @@
         color="primary"
       >
         <!-- <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"></v-img> -->
-        GK
+        {{ playerInitials }}
       </VAvatar>
 
       <div class="w-100">
@@ -64,6 +64,9 @@ const props = defineProps<{
 }>();
 
 const pData = props.player.data;
+// prettier-ignore
+const playerInitials =
+  `${pData.firstName?.slice(0, 1)}${pData.lastName?.slice(0, 1)}`.toUpperCase();
 
 async function deletePlayerHandler(payerId: string) {
   // TODO: Ask for approval before removing!!!
