@@ -122,7 +122,7 @@ const DEFAULT_PLAYER_DATA: PlayerData = {
   height: "",
   leadFoot: LeadFoot.DEFAULT,
   seenAt: "",
-  note: "",
+  notes: "",
 };
 
 const props = defineProps<{

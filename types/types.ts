@@ -43,7 +43,7 @@ export type PlayerData = {
   height?: string;
   leadFoot?: LeadFoot;
   seenAt?: string;
-  note?: string;
+  notes?: string;
 };
 
 export type sortDirections = "ASC" | "DESC";

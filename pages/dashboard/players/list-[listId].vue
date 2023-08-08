@@ -53,7 +53,7 @@
           <DetailsListItem title="Weight" :val="pData?.weight" />
           <DetailsListItem title="Height" :val="pData?.height" />
           <DetailsListItem title="Seen At" :val="pData?.seenAt" />
-          <DetailsListItem title="Notes" :val="pData?.note" class="mt-6" />
+          <DetailsListItem title="Notes" :val="pData?.notes" class="mt-6" />
         </ul>
       </VContainer>
 
@@ -85,47 +85,96 @@
     @update:modelValue="toggleDialogsHandler('add', false)"
   >
     <VCard>
-      <VToolbar>
+      <VToolbar class="">
         <VBtn icon="mdi-close" @click="toggleDialogsHandler('add', false)" />
         <VToolbarTitle text="Add New Player" />
       </VToolbar>
 
-      <VContainer class="text-center">
+      <VCardText>
         <!-- TODO: Extract this form to a separate .vue file -->
-        <VForm fast-fail>
+        <VForm>
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! Add v-models for each input -->
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! -->
           <VTextField
             name="firstName"
             label="First Name"
-            variant="underlined"
+            variant="solo-filled"
             density="compact"
           />
           <VTextField
             name="lastName"
             label="Last Name"
-            variant="underlined"
+            variant="solo-filled"
             density="compact"
           />
           <VTextField
             name="age"
             label="Age"
             type="number"
-            variant="underlined"
+            variant="solo-filled"
             density="compact"
           />
           <VSelect
             name="position"
             label="Position"
-            variant="underlined"
+            variant="solo-filled"
             density="compact"
             :items="footballPositionsArray"
           />
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! Finish this form -->
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! -->
+          <VTextField
+            name="nationality"
+            label="Nationality"
+            variant="solo-filled"
+            density="compact"
+          />
+          <VTextField
+            name="club"
+            label="Club"
+            variant="solo-filled"
+            density="compact"
+          />
+          <div class="d-flex gap-16">
+            <VTextField
+              name="weight"
+              label="Weight"
+              suffix="kg"
+              type="number"
+              variant="solo-filled"
+              density="compact"
+            />
+            <VTextField
+              name="height"
+              label="Height"
+              suffix="cm"
+              type="number"
+              variant="solo-filled"
+              density="compact"
+            />
+          </div>
+          <VSelect
+            name="leadFoot"
+            label="Lead Foot"
+            variant="solo-filled"
+            density="compact"
+            :items="leadFootArray"
+          />
+          <VTextField
+            name="seenAt"
+            label="Seen At"
+            variant="solo-filled"
+            density="compact"
+          />
+          <VTextarea
+            name="notes"
+            label="Notes"
+            variant="solo-filled"
+            density="compact"
+          />
         </VForm>
-      </VContainer>
+      </VCardText>
 
       <VCardActions>
         <VBtn
@@ -145,7 +194,7 @@ import type { PlayerObj } from "@/types/types";
 import { useListsStore } from "@/stores/listsStore";
 import { usePlayersStore } from "@/stores/playersStore";
 import { useDisplay } from "vuetify";
-import { FootballPositions } from "@/types/enums";
+import { FootballPositions, LeadFoot } from "@/types/enums";
 const { mdAndUp } = useDisplay();
 const listsStore = useListsStore();
 const playersStore = usePlayersStore();
@@ -225,6 +274,11 @@ const footballPositionsArray = Object.entries(FootballPositions).map(
     value: key,
   })
 );
+
+const leadFootArray = Object.entries(LeadFoot).map(([key, value]) => ({
+  title: value,
+  value: key,
+}));
 </script>
 
 <style lang="scss" scoped>
