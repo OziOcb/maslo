@@ -50,7 +50,7 @@ export const usePlayersStore = defineStore("usePlayersStore", {
           height: playerData.height + "cm", // TODO: 'cm' should be global variable
           leadFoot: playerData.leadFoot,
           seenAt: playerData.seenAt,
-          note: playerData.note,
+          notes: playerData.notes,
         } as PlayerData,
       };
       const res = await addNewFirebaseDocument(

@@ -33,7 +33,7 @@
         </option>
       </select>
       <input v-model.trim="playerData.seenAt" placeholder="seen at" />
-      <textarea v-model.trim="playerData.note" placeholder="note" />
+      <textarea v-model.trim="playerData.notes" placeholder="notes" />
 
       <button type="submit" :disabled="isSubmitDisabled">add</button>
     </form>
