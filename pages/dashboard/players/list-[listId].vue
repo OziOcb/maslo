@@ -81,6 +81,7 @@
     v-model="isAddOrEditPlayerDialogVisible"
     :max-width="!mdAndUp ? '100%' : '50%'"
     scrollable
+    persistent
     @update:modelValue="toggleDialogsHandler('add', false)"
   >
     <VCard>
@@ -89,18 +90,52 @@
         <VToolbarTitle text="Add New Player" />
       </VToolbar>
 
-      <!-- TODO: ENDED HERE! -->
-      <!-- TODO: ENDED HERE! -->
-      <!-- TODO: ENDED HERE! Create Form for adding players -->
-      <!-- TODO: ENDED HERE! -->
-      <!-- TODO: ENDED HERE! -->
       <VContainer class="text-center">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia porro
-        quia itaque fugit rem aliquid odio eos, tenetur at voluptate numquam qui
-        magni possimus quasi, maxime maiores architecto mollitia laborum?
+        <!-- TODO: Extract this form to a separate .vue file -->
+        <VForm fast-fail>
+          <VTextField
+            name="firstName"
+            label="First Name"
+            variant="underlined"
+            density="compact"
+          />
+          <VTextField
+            name="lastName"
+            label="Last Name"
+            variant="underlined"
+            density="compact"
+          />
+          <VTextField
+            name="age"
+            label="Age"
+            type="number"
+            variant="underlined"
+            density="compact"
+          />
+          <VSelect
+            name="position"
+            label="Position"
+            variant="underlined"
+            density="compact"
+            :items="footballPositionsArray"
+          />
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! Finish this form -->
+          <!-- TODO: ENDED HERE! -->
+          <!-- TODO: ENDED HERE! -->
+        </VForm>
       </VContainer>
 
-      <VCardActions> actions </VCardActions>
+      <VCardActions>
+        <VBtn
+          text="Add Player"
+          type="submit"
+          color="success"
+          class="mt-2"
+          block
+        />
+      </VCardActions>
     </VCard>
   </VDialog>
 </template>
@@ -110,6 +145,7 @@ import type { PlayerObj } from "@/types/types";
 import { useListsStore } from "@/stores/listsStore";
 import { usePlayersStore } from "@/stores/playersStore";
 import { useDisplay } from "vuetify";
+import { FootballPositions } from "@/types/enums";
 const { mdAndUp } = useDisplay();
 const listsStore = useListsStore();
 const playersStore = usePlayersStore();
@@ -182,6 +218,13 @@ function toggleDialogsHandler(
 async function deletePlayerHandler(payerId: string) {
   await playersStore.deletePlayer(payerId);
 }
+
+const footballPositionsArray = Object.entries(FootballPositions).map(
+  ([key, value]) => ({
+    title: `${key} - ${value}`,
+    value: key,
+  })
+);
 </script>
 
 <style lang="scss" scoped>
