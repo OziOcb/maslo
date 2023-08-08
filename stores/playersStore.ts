@@ -17,7 +17,7 @@ interface State {
   searchFor: string;
   sortBy: keyof PlayerData | "";
   sortDirection: sortDirections;
-  filerByPosition: FootballPositionsAbbreviations;
+  filerByPosition: FootballPositionsAbbreviations | null;
   unsubscribe: Unsubscribe | null;
 }
 
@@ -27,7 +27,7 @@ export const usePlayersStore = defineStore("usePlayersStore", {
     searchFor: "",
     sortBy: "",
     sortDirection: "ASC",
-    filerByPosition: FootballPositionsAbbreviations.DEFAULT,
+    filerByPosition: null,
     unsubscribe: null,
   }),
 

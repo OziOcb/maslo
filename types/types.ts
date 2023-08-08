@@ -35,13 +35,13 @@ export type PlayerObj = {
 export type PlayerData = {
   firstName?: string;
   lastName?: string;
-  age?: number;
-  position?: FootballPositionsAbbreviations;
+  age?: number | null;
+  position?: FootballPositionsAbbreviations | null;
   nationality?: string;
   club?: string;
   weight?: string;
   height?: string;
-  leadFoot?: LeadFoot;
+  leadFoot?: LeadFoot | null;
   seenAt?: string;
   notes?: string;
 };

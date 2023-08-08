@@ -115,12 +115,12 @@ const DEFAULT_PLAYER_DATA: PlayerData = {
   firstName: "",
   lastName: "",
   age: 0,
-  position: FootballPositionsAbbreviations.DEFAULT,
+  position: null,
   nationality: "",
   club: "",
   weight: "",
   height: "",
-  leadFoot: LeadFoot.DEFAULT,
+  leadFoot: null,
   seenAt: "",
   notes: "",
 };
@@ -156,6 +156,6 @@ function resetAllFiltersHandler() {
   playersStore.searchFor = "";
   playersStore.sortBy = "";
   playersStore.sortDirection = "ASC";
-  playersStore.filerByPosition = FootballPositionsAbbreviations.DEFAULT;
+  playersStore.filerByPosition = null;
 }
 </script>

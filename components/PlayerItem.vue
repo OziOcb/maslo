@@ -26,19 +26,51 @@
           <VRow>
             <VCol cols="12" sm="6">
               <ul class="playerDetailsList">
-                <DetailsListItem title="Nationality" :val="pData.nationality" />
-                <DetailsListItem title="Club" :val="pData.club" />
-                <DetailsListItem title="Age" :val="pData.age" />
-                <DetailsListItem title="Lead Foot" :val="pData.leadFoot" />
+                <DetailsListItem
+                  v-if="pData.nationality"
+                  title="Nationality"
+                  :val="pData.nationality"
+                />
+                <DetailsListItem
+                  v-if="pData.club"
+                  title="Club"
+                  :val="pData.club"
+                />
+                <DetailsListItem
+                  v-if="pData.age"
+                  title="Age"
+                  :val="pData.age?.toString()"
+                />
+                <DetailsListItem
+                  v-if="pData.leadFoot"
+                  title="Lead Foot"
+                  :val="pData.leadFoot?.toString()"
+                />
               </ul>
             </VCol>
 
             <VCol cols="12" sm="6">
               <ul class="playerDetailsList">
-                <DetailsListItem title="Position" :val="pData.position" />
-                <DetailsListItem title="Weight" :val="pData.weight" />
-                <DetailsListItem title="Height" :val="pData.height" />
-                <DetailsListItem title="Seen At" :val="pData.seenAt" />
+                <DetailsListItem
+                  v-if="pData.position"
+                  title="Position"
+                  :val="pData.position?.toString()"
+                />
+                <DetailsListItem
+                  v-if="pData.weight && pData.weight !== 'kg'"
+                  title="Weight"
+                  :val="pData.weight"
+                />
+                <DetailsListItem
+                  v-if="pData.height && pData.height !== 'cm'"
+                  title="Height"
+                  :val="pData.height"
+                />
+                <DetailsListItem
+                  v-if="pData.seenAt"
+                  title="Seen At"
+                  :val="pData.seenAt"
+                />
               </ul>
             </VCol>
           </VRow>

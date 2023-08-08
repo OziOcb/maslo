@@ -4,7 +4,7 @@
       <VToolbarTitle :text="listName" class="text-capitalize" />
       <VBtn
         variant="tonal"
-        :text="!mdAndUp ? '+' : '+ Add Player'"
+        :text="!mdAndUp ? '+' : '+Add Player'"
         @click="toggleDialogsHandler('add', true)"
       />
     </VToolbar>
@@ -25,6 +25,7 @@
     </VContainer>
   </VCard>
 
+  <!-- Show More -->
   <VDialog
     v-model="isShowPlayerDialogVisible"
     :max-width="!mdAndUp ? '100%' : '50%'"
@@ -39,21 +40,62 @@
         />
         <VToolbarTitle
           class="text-capitalize"
-          :text="`${pData?.firstName} ${pData?.lastName}`"
+          :text="`${currentPlayerData?.firstName} ${currentPlayerData?.lastName}`"
         />
       </VToolbar>
 
       <VContainer class="text-center">
         <ul class="playerDetailsList">
-          <DetailsListItem title="Nationality" :val="pData?.nationality" />
-          <DetailsListItem title="Club" :val="pData?.club" />
-          <DetailsListItem title="Age" :val="pData?.age" />
-          <DetailsListItem title="Lead Foot" :val="pData?.leadFoot" />
-          <DetailsListItem title="Position" :val="pData?.position" />
-          <DetailsListItem title="Weight" :val="pData?.weight" />
-          <DetailsListItem title="Height" :val="pData?.height" />
-          <DetailsListItem title="Seen At" :val="pData?.seenAt" />
-          <DetailsListItem title="Notes" :val="pData?.notes" class="mt-6" />
+          <DetailsListItem
+            v-if="currentPlayerData?.nationality"
+            title="Nationality"
+            :val="currentPlayerData?.nationality"
+          />
+          <DetailsListItem
+            v-if="currentPlayerData?.club"
+            title="Club"
+            :val="currentPlayerData?.club"
+          />
+          <DetailsListItem
+            v-if="currentPlayerData?.age"
+            title="Age"
+            :val="currentPlayerData?.age?.toString()"
+          />
+          <DetailsListItem
+            v-if="currentPlayerData?.leadFoot"
+            title="Lead Foot"
+            :val="currentPlayerData?.leadFoot?.toString()"
+          />
+          <DetailsListItem
+            v-if="currentPlayerData?.position"
+            title="Position"
+            :val="currentPlayerData?.position?.toString()"
+          />
+          <DetailsListItem
+            v-if="
+              currentPlayerData?.weight && currentPlayerData?.weight !== 'kg'
+            "
+            title="Weight"
+            :val="currentPlayerData?.weight"
+          />
+          <DetailsListItem
+            v-if="
+              currentPlayerData?.height && currentPlayerData?.height !== 'cm'
+            "
+            title="Height"
+            :val="currentPlayerData?.height"
+          />
+          <DetailsListItem
+            v-if="currentPlayerData?.seenAt"
+            title="Seen At"
+            :val="currentPlayerData?.seenAt"
+          />
+          <DetailsListItem
+            v-if="currentPlayerData?.notes"
+            title="Notes"
+            :val="currentPlayerData?.notes"
+            class="mt-6"
+          />
         </ul>
       </VContainer>
 
@@ -77,6 +119,7 @@
     </VCard>
   </VDialog>
 
+  <!-- Add or Edit -->
   <VDialog
     v-model="isAddOrEditPlayerDialogVisible"
     :max-width="!mdAndUp ? '100%' : '50%'"
@@ -93,104 +136,134 @@
       <VCardText>
         <!-- TODO: Extract this form to a separate .vue file -->
         <VForm>
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! Add v-models for each input -->
-          <!-- TODO: ENDED HERE! -->
-          <!-- TODO: ENDED HERE! -->
           <VTextField
+            v-model="newPlayerData.firstName"
             name="firstName"
-            label="First Name"
+            label="First Name*"
             variant="solo-filled"
             density="compact"
+            clearable
           />
           <VTextField
+            v-model="newPlayerData.lastName"
             name="lastName"
             label="Last Name"
             variant="solo-filled"
             density="compact"
+            clearable
           />
           <VTextField
+            v-model="newPlayerData.age"
             name="age"
             label="Age"
             type="number"
             variant="solo-filled"
             density="compact"
+            clearable
           />
           <VSelect
+            v-model="newPlayerData.position"
             name="position"
             label="Position"
             variant="solo-filled"
             density="compact"
+            clearable
             :items="footballPositionsArray"
           />
           <VTextField
+            v-model="newPlayerData.nationality"
             name="nationality"
             label="Nationality"
             variant="solo-filled"
             density="compact"
+            clearable
           />
           <VTextField
+            v-model="newPlayerData.club"
             name="club"
             label="Club"
             variant="solo-filled"
             density="compact"
+            clearable
           />
           <div class="d-flex gap-16">
             <VTextField
+              v-model="newPlayerData.weight"
               name="weight"
               label="Weight"
-              suffix="kg"
+              prefix="kg"
               type="number"
               variant="solo-filled"
               density="compact"
+              clearable
             />
             <VTextField
+              v-model="newPlayerData.height"
               name="height"
               label="Height"
-              suffix="cm"
+              prefix="cm"
               type="number"
               variant="solo-filled"
               density="compact"
+              clearable
             />
           </div>
           <VSelect
+            v-model="newPlayerData.leadFoot"
             name="leadFoot"
             label="Lead Foot"
             variant="solo-filled"
             density="compact"
+            clearable
             :items="leadFootArray"
           />
           <VTextField
+            v-model="newPlayerData.seenAt"
             name="seenAt"
             label="Seen At"
             variant="solo-filled"
             density="compact"
+            clearable
           />
           <VTextarea
+            v-model="newPlayerData.notes"
             name="notes"
             label="Notes"
             variant="solo-filled"
             density="compact"
+            clearable
           />
         </VForm>
       </VCardText>
 
-      <VCardActions>
+      <VCardActions class="justify-space-between">
         <VBtn
-          text="Add Player"
-          type="submit"
+          text="Reset"
+          variant="plain"
+          color="warning"
+          @click="newPlayerData = { ...DEFAULT_PLAYER_DATA }"
+        />
+        <VBtn
+          text="+Add Player"
+          variant="elevated"
           color="success"
-          class="mt-2"
-          block
+          :disabled="!newPlayerData.firstName"
+          @click="addPlayerHandler()"
         />
       </VCardActions>
     </VCard>
   </VDialog>
+
+  <!-- Remove -->
+  <!-- TODO: ENDED HERE! -->
+  <!-- TODO: ENDED HERE! -->
+  <!-- TODO: ENDED HERE! Create VDialog for deleting players -->
+  <!-- TODO: ENDED HERE! -->
+  <!-- TODO: ENDED HERE! -->
 </template>
 
 <script setup lang="ts">
-import type { PlayerObj } from "@/types/types";
+import type { PlayerObj, PlayerData } from "@/types/types";
 import { useListsStore } from "@/stores/listsStore";
 import { usePlayersStore } from "@/stores/playersStore";
 import { useDisplay } from "vuetify";
@@ -246,7 +319,7 @@ const isAddOrEditPlayerDialogVisible = ref(false);
 const isDeletePlayerDialogVisible = ref(false);
 const isInEditMode = ref(false);
 const currentPlayer = ref<PlayerObj>();
-const pData = computed(() => currentPlayer.value?.data);
+const currentPlayerData = computed(() => currentPlayer.value?.data);
 
 function toggleDialogsHandler(
   type: "add" | "delete" | "edit" | "showMore",
@@ -264,6 +337,26 @@ function toggleDialogsHandler(
   currentPlayer.value = isVisible ? player! : undefined;
 }
 
+const DEFAULT_PLAYER_DATA: PlayerData = {
+  firstName: "",
+  lastName: "",
+  age: null,
+  position: null,
+  nationality: "",
+  club: "",
+  weight: "",
+  height: "",
+  leadFoot: null,
+  seenAt: "",
+  notes: "",
+};
+const newPlayerData: Ref<PlayerData> = ref({ ...DEFAULT_PLAYER_DATA });
+
+async function addPlayerHandler() {
+  await playersStore.addNewPlayer(listId, newPlayerData.value);
+  isAddOrEditPlayerDialogVisible.value = false;
+  newPlayerData.value = { ...DEFAULT_PLAYER_DATA };
+}
 async function deletePlayerHandler(payerId: string) {
   await playersStore.deletePlayer(payerId);
 }
@@ -274,7 +367,6 @@ const footballPositionsArray = Object.entries(FootballPositions).map(
     value: key,
   })
 );
-
 const leadFootArray = Object.entries(LeadFoot).map(([key, value]) => ({
   title: value,
   value: key,
