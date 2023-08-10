@@ -38,10 +38,7 @@
           icon="mdi-close"
           @click="toggleDialogsHandler('showMore', false)"
         />
-        <VToolbarTitle
-          class="text-capitalize"
-          :text="`${currentPlayerData?.firstName} ${currentPlayerData?.lastName}`"
-        />
+        <VToolbarTitle class="text-capitalize" :text="currentPlayerFullName" />
       </VToolbar>
 
       <VContainer class="text-center">
@@ -255,11 +252,27 @@
   </VDialog>
 
   <!-- Remove -->
-  <!-- TODO: ENDED HERE! -->
-  <!-- TODO: ENDED HERE! -->
-  <!-- TODO: ENDED HERE! Create VDialog for deleting players -->
-  <!-- TODO: ENDED HERE! -->
-  <!-- TODO: ENDED HERE! -->
+  <VDialog
+    v-model="isDeletePlayerDialogVisible"
+    max-width="600px"
+    @update:modelValue="toggleDialogsHandler('delete', false)"
+  >
+    <VCard>
+      <VToolbar>
+        <VBtn icon="mdi-close" @click="toggleDialogsHandler('delete', false)" />
+        <VToolbarTitle text="Are you sure?" />
+      </VToolbar>
+
+      <VContainer class="text-center">
+        <p>Just to confirm, do you really want to delete this player?</p>
+        <p class="text-h4 text-capitalize">{{ currentPlayerFullName }}</p>
+      </VContainer>
+
+      <VCardActions>
+        <VBtn text="Delete" color="red" block @click="deletePlayerHandler" />
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script setup lang="ts">
@@ -320,6 +333,10 @@ const isDeletePlayerDialogVisible = ref(false);
 const isInEditMode = ref(false);
 const currentPlayer = ref<PlayerObj>();
 const currentPlayerData = computed(() => currentPlayer.value?.data);
+const currentPlayerFullName = computed(
+  () =>
+    `${currentPlayerData.value?.firstName} ${currentPlayerData.value?.lastName}`
+);
 
 function toggleDialogsHandler(
   type: "add" | "delete" | "edit" | "showMore",
@@ -357,8 +374,9 @@ async function addPlayerHandler() {
   isAddOrEditPlayerDialogVisible.value = false;
   newPlayerData.value = { ...DEFAULT_PLAYER_DATA };
 }
-async function deletePlayerHandler(payerId: string) {
-  await playersStore.deletePlayer(payerId);
+async function deletePlayerHandler() {
+  await playersStore.deletePlayer(currentPlayer.value?.id as string);
+  toggleDialogsHandler("delete", false);
 }
 
 const footballPositionsArray = Object.entries(FootballPositions).map(
