@@ -40,17 +40,17 @@ export const usePlayersStore = defineStore("usePlayersStore", {
         createdAt: new Date(),
         inLists: [currentListId],
         data: {
-          firstName: playerData.firstName?.toLowerCase(),
-          lastName: playerData.lastName?.toLowerCase(),
-          age: playerData.age,
-          position: playerData.position,
-          nationality: playerData.nationality,
-          club: playerData.club,
-          weight: playerData.weight + "kg", // TODO: 'kg' should be global variable
-          height: playerData.height + "cm", // TODO: 'cm' should be global variable
-          leadFoot: playerData.leadFoot,
-          seenAt: playerData.seenAt,
-          notes: playerData.notes,
+          firstName: playerData.firstName?.toLowerCase() || "",
+          lastName: playerData.lastName?.toLowerCase() || "",
+          age: playerData.age || null,
+          position: playerData.position || null,
+          nationality: playerData.nationality || "",
+          club: playerData.club || "",
+          weight: playerData.weight ? playerData.weight + "kg" : "", // TODO: 'kg' should be global variable
+          height: playerData.height ? playerData.height + "cm" : "", // TODO: 'cm' should be global variable
+          leadFoot: playerData.leadFoot || null,
+          seenAt: playerData.seenAt || "",
+          notes: playerData.notes || "",
         } as PlayerData,
       };
       const res = await addNewFirebaseDocument(

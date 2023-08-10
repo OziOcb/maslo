@@ -210,9 +210,9 @@ function toggleDialogsHandler(
   if (type === "add") isAddOrEditListDialogVisible.value = isVisible;
   if (type === "delete") isDeleteListDialogVisible.value = isVisible;
   if (type === "edit") {
+    isInEditMode.value = isVisible ? true : false;
     isAddOrEditListDialogVisible.value = isVisible;
     tempListName.value = isVisible ? listName! : "";
-    isInEditMode.value = isVisible ? true : false;
   }
 
   currentListId.value = isVisible ? listId! : "";

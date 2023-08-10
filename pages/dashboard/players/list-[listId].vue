@@ -122,19 +122,26 @@
     :max-width="!mdAndUp ? '100%' : '50%'"
     scrollable
     persistent
-    @update:modelValue="toggleDialogsHandler('add', false)"
+    @update:modelValue="
+      toggleDialogsHandler(!isInEditMode ? 'add' : 'edit', false)
+    "
   >
     <VCard>
       <VToolbar class="">
-        <VBtn icon="mdi-close" @click="toggleDialogsHandler('add', false)" />
-        <VToolbarTitle text="Add New Player" />
+        <VBtn
+          icon="mdi-close"
+          @click="toggleDialogsHandler(!isInEditMode ? 'add' : 'edit', false)"
+        />
+        <VToolbarTitle
+          :text="!isInEditMode ? 'Add New Player' : 'Edit Player'"
+        />
       </VToolbar>
 
       <VCardText>
         <!-- TODO: Extract this form to a separate .vue file -->
         <VForm>
           <VTextField
-            v-model="newPlayerData.firstName"
+            v-model="currentPlayerData.firstName"
             name="firstName"
             label="First Name*"
             variant="solo-filled"
@@ -142,7 +149,7 @@
             clearable
           />
           <VTextField
-            v-model="newPlayerData.lastName"
+            v-model="currentPlayerData.lastName"
             name="lastName"
             label="Last Name"
             variant="solo-filled"
@@ -150,7 +157,7 @@
             clearable
           />
           <VTextField
-            v-model="newPlayerData.age"
+            v-model="currentPlayerData.age"
             name="age"
             label="Age"
             type="number"
@@ -159,7 +166,7 @@
             clearable
           />
           <VSelect
-            v-model="newPlayerData.position"
+            v-model="currentPlayerData.position"
             name="position"
             label="Position"
             variant="solo-filled"
@@ -168,7 +175,7 @@
             :items="footballPositionsArray"
           />
           <VTextField
-            v-model="newPlayerData.nationality"
+            v-model="currentPlayerData.nationality"
             name="nationality"
             label="Nationality"
             variant="solo-filled"
@@ -176,7 +183,7 @@
             clearable
           />
           <VTextField
-            v-model="newPlayerData.club"
+            v-model="currentPlayerData.club"
             name="club"
             label="Club"
             variant="solo-filled"
@@ -185,7 +192,7 @@
           />
           <div class="d-flex gap-16">
             <VTextField
-              v-model="newPlayerData.weight"
+              v-model="currentPlayerData.weight"
               name="weight"
               label="Weight"
               prefix="kg"
@@ -195,7 +202,7 @@
               clearable
             />
             <VTextField
-              v-model="newPlayerData.height"
+              v-model="currentPlayerData.height"
               name="height"
               label="Height"
               prefix="cm"
@@ -206,7 +213,7 @@
             />
           </div>
           <VSelect
-            v-model="newPlayerData.leadFoot"
+            v-model="currentPlayerData.leadFoot"
             name="leadFoot"
             label="Lead Foot"
             variant="solo-filled"
@@ -215,7 +222,7 @@
             :items="leadFootArray"
           />
           <VTextField
-            v-model="newPlayerData.seenAt"
+            v-model="currentPlayerData.seenAt"
             name="seenAt"
             label="Seen At"
             variant="solo-filled"
@@ -223,7 +230,7 @@
             clearable
           />
           <VTextarea
-            v-model="newPlayerData.notes"
+            v-model="currentPlayerData.notes"
             name="notes"
             label="Notes"
             variant="solo-filled"
@@ -238,14 +245,23 @@
           text="Reset"
           variant="plain"
           color="warning"
-          @click="newPlayerData = { ...DEFAULT_PLAYER_DATA }"
+          @click="currentPlayerData = { ...DEFAULT_PLAYER_DATA }"
         />
         <VBtn
+          v-if="!isInEditMode"
           text="+Add Player"
           variant="elevated"
           color="success"
-          :disabled="!newPlayerData.firstName"
+          :disabled="!currentPlayerData.firstName"
           @click="addPlayerHandler()"
+        />
+        <VBtn
+          v-else
+          text="Edit Player"
+          variant="elevated"
+          color="success"
+          :disabled="!currentPlayerData.firstName"
+          @click="editPlayerHandler()"
         />
       </VCardActions>
     </VCard>
@@ -327,33 +343,6 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
   return playersArr;
 });
 
-const isShowPlayerDialogVisible = ref(false);
-const isAddOrEditPlayerDialogVisible = ref(false);
-const isDeletePlayerDialogVisible = ref(false);
-const isInEditMode = ref(false);
-const currentPlayer = ref<PlayerObj>();
-const currentPlayerData = computed(() => currentPlayer.value?.data);
-const currentPlayerFullName = computed(
-  () =>
-    `${currentPlayerData.value?.firstName} ${currentPlayerData.value?.lastName}`
-);
-
-function toggleDialogsHandler(
-  type: "add" | "delete" | "edit" | "showMore",
-  isVisible: boolean,
-  player?: PlayerObj
-) {
-  if (type === "showMore") isShowPlayerDialogVisible.value = isVisible;
-  if (type === "add") isAddOrEditPlayerDialogVisible.value = isVisible;
-  if (type === "delete") isDeletePlayerDialogVisible.value = isVisible;
-  if (type === "edit") {
-    isAddOrEditPlayerDialogVisible.value = isVisible;
-    isInEditMode.value = isVisible ? true : false;
-  }
-
-  currentPlayer.value = isVisible ? player! : undefined;
-}
-
 const DEFAULT_PLAYER_DATA: PlayerData = {
   firstName: "",
   lastName: "",
@@ -367,15 +356,55 @@ const DEFAULT_PLAYER_DATA: PlayerData = {
   seenAt: "",
   notes: "",
 };
-const newPlayerData: Ref<PlayerData> = ref({ ...DEFAULT_PLAYER_DATA });
+
+const isShowPlayerDialogVisible = ref(false);
+const isAddOrEditPlayerDialogVisible = ref(false);
+const isDeletePlayerDialogVisible = ref(false);
+const isInEditMode = ref(false);
+const currentPlayerId = ref<string | undefined>("");
+const currentPlayerData = ref<PlayerData | undefined>({
+  ...DEFAULT_PLAYER_DATA,
+});
+const currentPlayerFullName = ref("");
+
+function toggleDialogsHandler(
+  type: "add" | "delete" | "edit" | "showMore",
+  isVisible: boolean,
+  player?: PlayerObj
+) {
+  if (type === "showMore") isShowPlayerDialogVisible.value = isVisible;
+  if (type === "add") isAddOrEditPlayerDialogVisible.value = isVisible;
+  if (type === "delete") isDeletePlayerDialogVisible.value = isVisible;
+  if (type === "edit") {
+    isInEditMode.value = isVisible;
+    isAddOrEditPlayerDialogVisible.value = isVisible;
+    currentPlayerData.value = { ...player?.data };
+  }
+
+  currentPlayerId.value = player?.id;
+  currentPlayerFullName.value = `${player?.data.firstName} ${player?.data.lastName}`;
+  currentPlayerData.value = isVisible
+    ? { ...player?.data }
+    : { ...DEFAULT_PLAYER_DATA };
+}
 
 async function addPlayerHandler() {
-  await playersStore.addNewPlayer(listId, newPlayerData.value);
+  await playersStore.addNewPlayer(listId, currentPlayerData.value!);
   isAddOrEditPlayerDialogVisible.value = false;
-  newPlayerData.value = { ...DEFAULT_PLAYER_DATA };
+  currentPlayerData.value = { ...DEFAULT_PLAYER_DATA };
 }
+
+// TODO: ENDED HERE!
+// TODO: ENDED HERE!
+// TODO: ENDED HERE Finish this function!
+// TODO: ENDED HERE!
+// TODO: ENDED HERE!
+async function editPlayerHandler() {
+  console.log("-\n--\n editPlayerHandler \n--\n-"); // REMOVE_ME: remove when done!
+}
+
 async function deletePlayerHandler() {
-  await playersStore.deletePlayer(currentPlayer.value?.id as string);
+  await playersStore.deletePlayer(currentPlayerId.value as string);
   toggleDialogsHandler("delete", false);
 }
 
