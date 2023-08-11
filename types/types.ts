@@ -1,4 +1,4 @@
-import { FootballPositionsAbbreviations } from "@/types/enums";
+import { FootballPositionsAbbreviations, LeadFoot } from "@/types/enums";
 
 export type Operators =
   | "<"
@@ -16,7 +16,7 @@ export type List = {
   id?: string;
   authorId?: string;
   name: string;
-  createdAt: Date;
+  createdAt: number;
   allowedUsers: (string | undefined)[];
 };
 
@@ -27,16 +27,23 @@ export type ObjectOfLists = {
 export type PlayerObj = {
   id?: string;
   authorId?: string;
-  createdAt: Date;
+  createdAt: number;
   inLists: string[];
   data: PlayerData;
 };
 
 export type PlayerData = {
-  firstName: string;
-  lastName: string;
-  age: number;
-  position: FootballPositionsAbbreviations;
+  firstName?: string;
+  lastName?: string;
+  age?: number | null;
+  position?: FootballPositionsAbbreviations | null;
+  nationality?: string;
+  club?: string;
+  weight?: string;
+  height?: string;
+  leadFoot?: LeadFoot | null;
+  seenAt?: string;
+  notes?: string;
 };
 
 export type sortDirections = "ASC" | "DESC";

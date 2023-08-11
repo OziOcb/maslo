@@ -1,6 +1,10 @@
 import type { PlayerObj, PlayerData, sortDirections } from "@/types/types";
 import { FootballPositionsAbbreviations } from "@/types/enums";
-const { addNewFirebaseDocument, deleteFirebaseDocument } = useFirebaseDb();
+const {
+  addNewFirebaseDocument,
+  updateFirebaseDocumentObject,
+  deleteFirebaseDocument,
+} = useFirebaseDb();
 import {
   collection,
   doc,
@@ -17,7 +21,7 @@ interface State {
   searchFor: string;
   sortBy: keyof PlayerData | "";
   sortDirection: sortDirections;
-  filerByPosition: FootballPositionsAbbreviations;
+  filerByPosition: FootballPositionsAbbreviations | null;
   unsubscribe: Unsubscribe | null;
 }
 
@@ -27,33 +31,11 @@ export const usePlayersStore = defineStore("usePlayersStore", {
     searchFor: "",
     sortBy: "",
     sortDirection: "ASC",
-    filerByPosition: FootballPositionsAbbreviations.DEFAULT,
+    filerByPosition: null,
     unsubscribe: null,
   }),
 
   actions: {
-    async addNewPlayer(currentListId: string, playerData: PlayerData) {
-      const { $auth } = useNuxtApp();
-      const currentUserUid = $auth.currentUser?.uid;
-
-      const playerObj: PlayerObj = {
-        createdAt: new Date(),
-        inLists: [currentListId],
-        data: {
-          firstName: playerData.firstName.toLowerCase(),
-          lastName: playerData.lastName.toLowerCase(),
-          age: playerData.age,
-          position: playerData.position,
-        },
-      };
-      const res = await addNewFirebaseDocument(
-        `users/${currentUserUid}/players`,
-        playerObj
-      );
-
-      return res;
-    },
-
     subscribeToPlayersCollection() {
       const { $firestore, $auth } = useNuxtApp();
       try {
@@ -78,6 +60,47 @@ export const usePlayersStore = defineStore("usePlayersStore", {
 
     unsubscribeFromPlayersCollection() {
       if (this.unsubscribe) this.unsubscribe();
+    },
+
+    async addNewPlayer(currentListId: string, playerData: PlayerData) {
+      const { $auth } = useNuxtApp();
+      const currentUserUid = $auth.currentUser?.uid;
+
+      const playerObj: PlayerObj = {
+        createdAt: Date.now(),
+        inLists: [currentListId],
+        data: {
+          firstName: playerData.firstName?.toLowerCase() || "",
+          lastName: playerData.lastName?.toLowerCase() || "",
+          age: playerData.age || null,
+          position: playerData.position || null,
+          nationality: playerData.nationality || "",
+          club: playerData.club || "",
+          weight: playerData.weight ? playerData.weight + "kg" : "", // TODO: 'kg' should be global variable
+          height: playerData.height ? playerData.height + "cm" : "", // TODO: 'cm' should be global variable
+          leadFoot: playerData.leadFoot || null,
+          seenAt: playerData.seenAt || "",
+          notes: playerData.notes || "",
+        } as PlayerData,
+      };
+      const res = await addNewFirebaseDocument(
+        `users/${currentUserUid}/players`,
+        playerObj
+      );
+
+      return res;
+    },
+
+    async updatePlayer(playerId: string, dataObj: PlayerData) {
+      const { $auth } = useNuxtApp();
+      const currentUserUid = $auth.currentUser?.uid;
+
+      const res = await updateFirebaseDocumentObject(
+        `users/${currentUserUid}/players`,
+        playerId,
+        { data: dataObj }
+      );
+      return res;
     },
 
     async deletePlayer(playerId: string) {

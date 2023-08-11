@@ -1,6 +1,4 @@
 export enum FootballPositions {
-  DEFAULT = "",
-
   // Defensive Positions
   GK = "Goalkeeper",
   CB = "Center Back",
@@ -45,8 +43,6 @@ export enum FootballPositions {
 }
 
 export enum FootballPositionsAbbreviations {
-  DEFAULT = "",
-
   // Defensive Positions
   GK = "GK",
   CB = "CB",
@@ -88,4 +84,10 @@ export enum FootballPositionsAbbreviations {
   SS = "SS",
   ST = "ST",
   WF = "WF",
+}
+
+export enum LeadFoot {
+  LEFT = "left",
+  RIGHT = "right",
+  BOTH = "both",
 }

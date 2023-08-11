@@ -58,7 +58,7 @@ export const useListsStore = defineStore("useListsStore", {
 
       const listObj: List = {
         name: newListName,
-        createdAt: new Date(),
+        createdAt: Date.now(),
         allowedUsers: [currentUserUid],
       };
       const res = await addNewFirebaseDocument(

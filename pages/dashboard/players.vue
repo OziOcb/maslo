@@ -9,7 +9,11 @@
   <VContainer tag="section" class="pa-0">
     <VRow>
       <VCol cols="12" sm="3" lg="2">
-        <VCard title="Your Lists">
+        <VCard>
+          <VToolbar>
+            <VToolbarTitle text="Your Lists" />
+          </VToolbar>
+
           <VTabs direction="vertical" color="primary">
             <VTab
               class="tab"
@@ -206,9 +210,9 @@ function toggleDialogsHandler(
   if (type === "add") isAddOrEditListDialogVisible.value = isVisible;
   if (type === "delete") isDeleteListDialogVisible.value = isVisible;
   if (type === "edit") {
+    isInEditMode.value = isVisible ? true : false;
     isAddOrEditListDialogVisible.value = isVisible;
     tempListName.value = isVisible ? listName! : "";
-    isInEditMode.value = isVisible ? true : false;
   }
 
   currentListId.value = isVisible ? listId! : "";
