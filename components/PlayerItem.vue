@@ -18,8 +18,8 @@
       </VAvatar>
 
       <div class="w-100">
-        <VCardTitle class="text-h6">
-          {{ pData.firstName }} {{ pData.lastName }}
+        <VCardTitle class="text-h6 text-capitalize">
+          {{ player.data.firstName }} {{ player.data.lastName }}
         </VCardTitle>
 
         <VContainer>
@@ -27,24 +27,24 @@
             <VCol cols="12" sm="6">
               <ul class="playerDetailsList">
                 <DetailsListItem
-                  v-if="pData.nationality"
+                  v-if="player.data.nationality"
                   title="Nationality"
-                  :val="pData.nationality"
+                  :val="player.data.nationality"
                 />
                 <DetailsListItem
-                  v-if="pData.club"
+                  v-if="player.data.club"
                   title="Club"
-                  :val="pData.club"
+                  :val="player.data.club"
                 />
                 <DetailsListItem
-                  v-if="pData.age"
+                  v-if="player.data.age"
                   title="Age"
-                  :val="pData.age?.toString()"
+                  :val="player.data.age?.toString()"
                 />
                 <DetailsListItem
-                  v-if="pData.leadFoot"
+                  v-if="player.data.leadFoot"
                   title="Lead Foot"
-                  :val="pData.leadFoot?.toString()"
+                  :val="player.data.leadFoot?.toString()"
                 />
               </ul>
             </VCol>
@@ -52,24 +52,24 @@
             <VCol cols="12" sm="6">
               <ul class="playerDetailsList">
                 <DetailsListItem
-                  v-if="pData.position"
+                  v-if="player.data.position"
                   title="Position"
-                  :val="pData.position?.toString()"
+                  :val="player.data.position?.toString()"
                 />
                 <DetailsListItem
-                  v-if="pData.weight && pData.weight !== 'kg'"
+                  v-if="player.data.weight && player.data.weight !== 'kg'"
                   title="Weight"
-                  :val="pData.weight"
+                  :val="player.data.weight"
                 />
                 <DetailsListItem
-                  v-if="pData.height && pData.height !== 'cm'"
+                  v-if="player.data.height && player.data.height !== 'cm'"
                   title="Height"
-                  :val="pData.height"
+                  :val="player.data.height"
                 />
                 <DetailsListItem
-                  v-if="pData.seenAt"
+                  v-if="player.data.seenAt"
                   title="Seen At"
-                  :val="pData.seenAt"
+                  :val="player.data.seenAt"
                 />
               </ul>
             </VCol>
@@ -132,9 +132,9 @@ const props = defineProps<{
   player: PlayerObj;
 }>();
 
-const pData = props.player.data;
 // prettier-ignore
-const playerInitials = `${pData.firstName?.slice(0, 1)}${pData.lastName?.slice(0, 1)}`.toUpperCase();
+const playerInitials =
+  `${props.player.data.firstName?.slice(0, 1)}${props.player.data.lastName?.slice(0, 1)}`.toUpperCase();
 </script>
 
 <style lang="scss" scoped>
