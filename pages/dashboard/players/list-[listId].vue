@@ -401,7 +401,11 @@ async function addPlayerHandler() {
 }
 
 async function editPlayerHandler() {
-  console.log("-\n--\n editPlayerHandler \n--\n-"); // REMOVE_ME: remove when done!
+  await playersStore.updatePlayer(
+    currentPlayerId.value as string,
+    currentPlayerData.value
+  );
+  toggleDialogsHandler("edit", false);
 }
 
 async function deletePlayerHandler() {

@@ -1,6 +1,10 @@
 import type { PlayerObj, PlayerData, sortDirections } from "@/types/types";
 import { FootballPositionsAbbreviations } from "@/types/enums";
-const { addNewFirebaseDocument, deleteFirebaseDocument } = useFirebaseDb();
+const {
+  addNewFirebaseDocument,
+  updateFirebaseDocumentObject,
+  deleteFirebaseDocument,
+} = useFirebaseDb();
 import {
   collection,
   doc,
@@ -32,6 +36,32 @@ export const usePlayersStore = defineStore("usePlayersStore", {
   }),
 
   actions: {
+    subscribeToPlayersCollection() {
+      const { $firestore, $auth } = useNuxtApp();
+      try {
+        const q = query(
+          collection($firestore, `users/${$auth.currentUser?.uid}/players`),
+          orderBy("createdAt"),
+          where("authorId", "==", $auth.currentUser?.uid)
+        );
+        const unSub = onSnapshot(q, (snap) => {
+          const arr: PlayerObj[] = [];
+          snap.forEach((doc) => {
+            arr.push({ ...doc.data(), id: doc.id } as PlayerObj);
+          });
+          this.players = arr;
+        });
+
+        this.unsubscribe = unSub;
+      } catch (e) {
+        console.error("Error subscribing to collection with filter: ", e);
+      }
+    },
+
+    unsubscribeFromPlayersCollection() {
+      if (this.unsubscribe) this.unsubscribe();
+    },
+
     async addNewPlayer(currentListId: string, playerData: PlayerData) {
       const { $auth } = useNuxtApp();
       const currentUserUid = $auth.currentUser?.uid;
@@ -61,30 +91,16 @@ export const usePlayersStore = defineStore("usePlayersStore", {
       return res;
     },
 
-    subscribeToPlayersCollection() {
-      const { $firestore, $auth } = useNuxtApp();
-      try {
-        const q = query(
-          collection($firestore, `users/${$auth.currentUser?.uid}/players`),
-          orderBy("createdAt"),
-          where("authorId", "==", $auth.currentUser?.uid)
-        );
-        const unSub = onSnapshot(q, (snap) => {
-          const arr: PlayerObj[] = [];
-          snap.forEach((doc) => {
-            arr.push({ ...doc.data(), id: doc.id } as PlayerObj);
-          });
-          this.players = arr;
-        });
+    async updatePlayer(playerId: string, dataObj: PlayerData) {
+      const { $auth } = useNuxtApp();
+      const currentUserUid = $auth.currentUser?.uid;
 
-        this.unsubscribe = unSub;
-      } catch (e) {
-        console.error("Error subscribing to collection with filter: ", e);
-      }
-    },
-
-    unsubscribeFromPlayersCollection() {
-      if (this.unsubscribe) this.unsubscribe();
+      const res = await updateFirebaseDocumentObject(
+        `users/${currentUserUid}/players`,
+        playerId,
+        { data: dataObj }
+      );
+      return res;
     },
 
     async deletePlayer(playerId: string) {
