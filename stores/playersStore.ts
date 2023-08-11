@@ -67,7 +67,7 @@ export const usePlayersStore = defineStore("usePlayersStore", {
       const currentUserUid = $auth.currentUser?.uid;
 
       const playerObj: PlayerObj = {
-        createdAt: new Date(),
+        createdAt: Date.now(),
         inLists: [currentListId],
         data: {
           firstName: playerData.firstName?.toLowerCase() || "",

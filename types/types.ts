@@ -16,7 +16,7 @@ export type List = {
   id?: string;
   authorId?: string;
   name: string;
-  createdAt: Date;
+  createdAt: number;
   allowedUsers: (string | undefined)[];
 };
 
@@ -27,7 +27,7 @@ export type ObjectOfLists = {
 export type PlayerObj = {
   id?: string;
   authorId?: string;
-  createdAt: Date;
+  createdAt: number;
   inLists: string[];
   data: PlayerData;
 };

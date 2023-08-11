@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.11",
+    "date-fns": "^2.30.0",
     "firebase": "^9.23.0",
     "lodash.isequal": "^4.5.0",
     "pinia": "^2.1.4",

@@ -88,6 +88,13 @@
             :val="currentPlayerData?.seenAt"
           />
           <DetailsListItem
+            v-if="currentPlayerAddedDate"
+            title="Added"
+            :val="
+              formatDistanceToNow(currentPlayerAddedDate, { addSuffix: true })
+            "
+          />
+          <DetailsListItem
             v-if="currentPlayerData?.notes"
             title="Notes"
             :val="currentPlayerData?.notes"
@@ -295,10 +302,11 @@
 </template>
 
 <script setup lang="ts">
+import { formatDistanceToNow, subDays } from "date-fns";
+import { useDisplay } from "vuetify";
 import type { PlayerObj, PlayerData } from "@/types/types";
 import { useListsStore } from "@/stores/listsStore";
 import { usePlayersStore } from "@/stores/playersStore";
-import { useDisplay } from "vuetify";
 import { FootballPositions, LeadFoot } from "@/types/enums";
 import _isEqual from "lodash.isequal";
 const { mdAndUp } = useDisplay();
@@ -367,6 +375,7 @@ const isDeletePlayerDialogVisible = ref(false);
 const isInEditMode = ref(false);
 const tempPlayerData = ref<PlayerData>();
 const currentPlayerId = ref<string | undefined>("");
+const currentPlayerAddedDate = ref<number>();
 const currentPlayerData = ref<PlayerData>({
   ...DEFAULT_PLAYER_DATA,
 });
@@ -388,6 +397,7 @@ function toggleDialogsHandler(
   }
 
   currentPlayerId.value = player?.id;
+  currentPlayerAddedDate.value = player?.createdAt;
   currentPlayerFullName.value = `${player?.data.firstName} ${player?.data.lastName}`;
   currentPlayerData.value = isVisible
     ? { ...player?.data }
