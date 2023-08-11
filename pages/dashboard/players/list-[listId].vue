@@ -260,7 +260,10 @@
           text="Edit Player"
           variant="elevated"
           color="success"
-          :disabled="!currentPlayerData.firstName"
+          :disabled="
+            !currentPlayerData.firstName ||
+            _isEqual(currentPlayerData, tempPlayerData)
+          "
           @click="editPlayerHandler()"
         />
       </VCardActions>
@@ -297,6 +300,7 @@ import { useListsStore } from "@/stores/listsStore";
 import { usePlayersStore } from "@/stores/playersStore";
 import { useDisplay } from "vuetify";
 import { FootballPositions, LeadFoot } from "@/types/enums";
+import _isEqual from "lodash.isequal";
 const { mdAndUp } = useDisplay();
 const listsStore = useListsStore();
 const playersStore = usePlayersStore();
@@ -361,8 +365,9 @@ const isShowPlayerDialogVisible = ref(false);
 const isAddOrEditPlayerDialogVisible = ref(false);
 const isDeletePlayerDialogVisible = ref(false);
 const isInEditMode = ref(false);
+const tempPlayerData = ref<PlayerData>();
 const currentPlayerId = ref<string | undefined>("");
-const currentPlayerData = ref<PlayerData | undefined>({
+const currentPlayerData = ref<PlayerData>({
   ...DEFAULT_PLAYER_DATA,
 });
 const currentPlayerFullName = ref("");
@@ -379,6 +384,7 @@ function toggleDialogsHandler(
     isInEditMode.value = isVisible;
     isAddOrEditPlayerDialogVisible.value = isVisible;
     currentPlayerData.value = { ...player?.data };
+    tempPlayerData.value = { ...player?.data };
   }
 
   currentPlayerId.value = player?.id;
@@ -394,11 +400,6 @@ async function addPlayerHandler() {
   currentPlayerData.value = { ...DEFAULT_PLAYER_DATA };
 }
 
-// TODO: ENDED HERE!
-// TODO: ENDED HERE!
-// TODO: ENDED HERE Finish this function!
-// TODO: ENDED HERE!
-// TODO: ENDED HERE!
 async function editPlayerHandler() {
   console.log("-\n--\n editPlayerHandler \n--\n-"); // REMOVE_ME: remove when done!
 }
