@@ -325,15 +325,29 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
 
   if (searchFor) {
     const search = searchFor.toLowerCase();
+    const doesInclude = (val: any) => val?.toLowerCase().includes(search);
 
     playersArr = playersArr.filter((player) => {
-      const { firstName, lastName, age, position } = player.data;
+      const {
+        firstName,
+        lastName,
+        age,
+        position,
+        nationality,
+        club,
+        leadFoot,
+        seenAt,
+      } = player.data;
 
       return (
-        firstName?.includes(search) ||
-        lastName?.includes(search) ||
-        age?.toString().includes(search) ||
-        position?.toLowerCase().includes(search)
+        doesInclude(firstName) ||
+        doesInclude(lastName) ||
+        doesInclude(age?.toString()) ||
+        doesInclude(position) ||
+        doesInclude(nationality) ||
+        doesInclude(club) ||
+        doesInclude(leadFoot) ||
+        doesInclude(seenAt)
       );
     });
   }
