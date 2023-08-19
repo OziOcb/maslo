@@ -363,7 +363,7 @@ const filteredPlayers: ComputedRef<PlayerObj[]> = computed(() => {
       playersArr,
       sortDirection,
       "data",
-      playersStore.sortBy
+      playersStore.sortBy as string
     );
 
   return playersArr;

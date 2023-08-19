@@ -1,36 +1,43 @@
 <template>
   <div>
-    <h4>filters</h4>
+    <VTextField
+      v-model="playersStore.searchFor"
+      name="searchFor"
+      label="Search"
+      variant="solo-filled"
+      density="compact"
+      clearable
+    />
 
-    <section>
-      <span>Search for</span>
-      <input v-model="playersStore.searchFor" type="text" />
+    <section class="d-flex">
+      <VSelect
+        v-model="playersStore.sortBy"
+        name="sortBy"
+        label="Sort By"
+        variant="solo-filled"
+        density="compact"
+        clearable
+        :items="Object.keys(DEFAULT_PLAYER_DATA)"
+      />
+      <VBtn
+        v-if="playersStore.sortBy"
+        class="ml-1"
+        variant="plain"
+        size="x-large"
+        density="compact"
+        :icon="
+          playersStore.sortDirection === 'ASC'
+            ? 'mdi-arrow-up-bold-circle-outline'
+            : 'mdi-arrow-down-bold-circle-outline'
+        "
+        @click="toggleSortDirectionHandler"
+      />
     </section>
 
     <section>
-      <span>sortBy: </span>
-      <select v-model="playersStore.sortBy" name="sortBy" id="sortBy">
-        <option value="">None</option>
-        <option
-          v-for="key in Object.keys(DEFAULT_PLAYER_DATA)"
-          :value="key"
-          :key="key"
-        >
-          {{ key }}
-        </option>
-      </select>
-
-      <br />
-
-      <template v-if="playersStore.sortBy">
-        <span>sortDirection</span>
-        <button @click="toggleSortDirectionHandler">
-          {{ playersStore.sortDirection === "ASC" ? "Up" : "Down" }}
-        </button>
-      </template>
-    </section>
-
-    <section>
+      <!-- TODO: ENDED HERE! -->
+      <!-- TODO: ENDED HERE! Use Vuetify components here -->
+      <!-- TODO: ENDED HERE! -->
       <span>filterByPosition</span>
       <select
         v-model="playersStore.filerByPosition"
@@ -88,7 +95,7 @@ function toggleSortDirectionHandler() {
 
 function resetAllFiltersHandler() {
   playersStore.searchFor = "";
-  playersStore.sortBy = "";
+  playersStore.sortBy = null;
   playersStore.sortDirection = "ASC";
   playersStore.filerByPosition = null;
 }
