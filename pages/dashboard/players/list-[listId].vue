@@ -10,7 +10,7 @@
     </VToolbar>
 
     <VContainer>
-      <!-- <TestPlayerControls :list-id="listId" /> -->
+      <ListFilters />
 
       <ul class="playersList">
         <PlayerItem
