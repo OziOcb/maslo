@@ -19,7 +19,7 @@ import {
 interface State {
   players: PlayerObj[];
   searchFor: string;
-  sortBy: keyof PlayerData | "";
+  sortBy: keyof PlayerData | null;
   sortDirection: sortDirections;
   filerByPosition: FootballPositionsAbbreviations | null;
   unsubscribe: Unsubscribe | null;
@@ -29,7 +29,7 @@ export const usePlayersStore = defineStore("usePlayersStore", {
   state: (): State => ({
     players: [],
     searchFor: "",
-    sortBy: "",
+    sortBy: null,
     sortDirection: "ASC",
     filerByPosition: null,
     unsubscribe: null,
