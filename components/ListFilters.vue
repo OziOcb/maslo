@@ -9,68 +9,63 @@
       clearable
     />
 
-    <section class="d-flex">
-      <VSelect
-        v-model="playersStore.sortBy"
-        name="sortBy"
-        label="Sort By"
-        variant="solo-filled"
-        density="compact"
-        clearable
-        :items="Object.keys(DEFAULT_PLAYER_DATA)"
-      />
-      <VBtn
-        v-if="playersStore.sortBy"
-        class="ml-1"
-        variant="plain"
-        size="x-large"
-        density="compact"
-        :icon="
-          playersStore.sortDirection === 'ASC'
-            ? 'mdi-arrow-up-bold-circle-outline'
-            : 'mdi-arrow-down-bold-circle-outline'
-        "
-        @click="toggleSortDirectionHandler"
-      />
-    </section>
+    <VContainer class="pa-0">
+      <VRow no-gutters>
+        <VCol cols="12" sm="6" class="mt-n4 pr-sm-1">
+          <VSelect
+            v-model="playersStore.filerByPosition"
+            name="filterByPosition"
+            label="Filter by Position"
+            variant="solo-filled"
+            density="compact"
+            clearable
+            :items="utilsFootballPositionsArray"
+          />
+        </VCol>
 
-    <section>
-      <!-- TODO: ENDED HERE! -->
-      <!-- TODO: ENDED HERE! Use Vuetify components here -->
-      <!-- TODO: ENDED HERE! -->
-      <span>filterByPosition</span>
-      <select
-        v-model="playersStore.filerByPosition"
-        name="filterByPosition"
-        id="filterByPosition"
-      >
-        <option value="">None</option>
-        <option
-          v-for="(position, key) in FootballPositions"
-          :value="key"
-          :key="key"
-        >
-          {{ key }} - {{ position }}
-        </option>
-      </select>
-    </section>
+        <VCol cols="12" sm="6" class="d-flex mt-n4 pl-sm-1">
+          <VSelect
+            v-model="playersStore.sortBy"
+            name="sortBy"
+            label="Sort By"
+            variant="solo-filled"
+            density="compact"
+            clearable
+            :items="Object.keys(DEFAULT_PLAYER_DATA)"
+          />
+          <VBtn
+            v-if="playersStore.sortBy"
+            class="ml-1"
+            variant="plain"
+            size="x-large"
+            density="compact"
+            :icon="
+              playersStore.sortDirection === 'ASC'
+                ? 'mdi-arrow-up-bold-circle-outline'
+                : 'mdi-arrow-down-bold-circle-outline'
+            "
+            @click="toggleSortDirectionHandler"
+          />
+        </VCol>
+      </VRow>
+    </VContainer>
 
-    <button
+    <VBtn
       v-if="
         playersStore.searchFor ||
         playersStore.sortBy ||
         playersStore.filerByPosition
       "
+      class="d-block mt-n4 mb-2 ml-auto"
+      variant="tonal"
+      text="Reset All"
       @click="resetAllFiltersHandler"
-    >
-      Reset All filters
-    </button>
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { PlayerData } from "@/types/types";
-import { FootballPositions } from "@/types/enums";
 import { usePlayersStore } from "@/stores/playersStore";
 const playersStore = usePlayersStore();
 

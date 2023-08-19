@@ -179,7 +179,7 @@
             variant="solo-filled"
             density="compact"
             clearable
-            :items="footballPositionsArray"
+            :items="utilsFootballPositionsArray"
           />
           <VTextField
             v-model="currentPlayerData.nationality"
@@ -226,7 +226,7 @@
             variant="solo-filled"
             density="compact"
             clearable
-            :items="leadFootArray"
+            :items="utilsLeadFootArray"
           />
           <VTextField
             v-model="currentPlayerData.seenAt"
@@ -307,7 +307,6 @@ import { useDisplay } from "vuetify";
 import type { PlayerObj, PlayerData } from "@/types/types";
 import { useListsStore } from "@/stores/listsStore";
 import { usePlayersStore } from "@/stores/playersStore";
-import { FootballPositions, LeadFoot } from "@/types/enums";
 import _isEqual from "lodash.isequal";
 const { mdAndUp } = useDisplay();
 const listsStore = useListsStore();
@@ -436,17 +435,6 @@ async function deletePlayerHandler() {
   await playersStore.deletePlayer(currentPlayerId.value as string);
   toggleDialogsHandler("delete", false);
 }
-
-const footballPositionsArray = Object.entries(FootballPositions).map(
-  ([key, value]) => ({
-    title: `${key} - ${value}`,
-    value: key,
-  })
-);
-const leadFootArray = Object.entries(LeadFoot).map(([key, value]) => ({
-  title: value,
-  value: key,
-}));
 </script>
 
 <style lang="scss" scoped>
