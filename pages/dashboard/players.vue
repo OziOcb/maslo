@@ -230,7 +230,6 @@ function toggleDialogsHandler(
     opacity: 0;
     border-color: transparent;
 
-    .tab:hover &,
     .tab:focus-within &,
     .v-tab--selected & {
       opacity: 1;
@@ -238,6 +237,14 @@ function toggleDialogsHandler(
     &:hover,
     &:focus {
       border-color: initial;
+    }
+
+    // This is a fix for a VTab issue on real mobile device
+    // Otherwise, users have to double click on a Tab to trigger it
+    @media (hover: hover) {
+      .tab:hover & {
+        opacity: 1;
+      }
     }
   }
 }
